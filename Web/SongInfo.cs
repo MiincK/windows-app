@@ -51,6 +51,7 @@ namespace ListenMoeClient
 		public SongInfoStream(TaskFactory factory)
 		{
 			this.factory = factory;
+			Globals.OnInternetDisconnected += Reconnection;
 			Reconnect();
 		}
 
@@ -62,11 +63,17 @@ namespace ListenMoeClient
 			socket.OnError += (sender, e) => { throw e.Exception; };
 			socket.OnClose += (sender, e) =>
 			{
+				System.Threading.Thread.Sleep(250);
 				Connect();
 			};
 
 			socket.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 			Connect();
+		}
+
+		public void Reconnection()
+		{
+			socket.Close();
 		}
 
 		private void Connect()

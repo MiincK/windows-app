@@ -12,6 +12,8 @@ namespace ListenMoeClient
 
 		Thread provideThread;
 
+		System.Timers.Timer tmrInternet;
+
 		Ogg ogg = new Ogg();
 		OpusDecoder decoder = OpusDecoder.Create(Globals.SAMPLE_RATE, 2);
 
@@ -22,7 +24,17 @@ namespace ListenMoeClient
 
 		public WebStreamPlayer(string url)
 		{
+			tmrInternet = new System.Timers.Timer(Settings.Get<int>("InternetDisconnectionTimer") * 1000);
+			tmrInternet.Elapsed += InternetDisconnected;
 			this.url = url;
+		}
+
+		private async void InternetDisconnected(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			Globals.InternetDisconnected();
+			await Stop();
+			Thread.Sleep(100);
+			Play();
 		}
 
 		public async Task Dispose()
@@ -54,6 +66,8 @@ namespace ListenMoeClient
 						while (playing)
 						{
 							byte[][] packets = ogg.GetAudioPackets(readFullyStream);
+							tmrInternet.Stop();
+							tmrInternet.Start();
 
 							for (int i = 0; i < packets.Length; i++)
 							{
@@ -71,7 +85,6 @@ namespace ListenMoeClient
 								catch (Concentus.OpusException)
 								{
 									//Skip this frame
-									//Note: the first 2 frames will hit this exception (I'm pretty sure they're not audio data frames)
 								}
 							}
 						}
@@ -94,6 +107,7 @@ namespace ListenMoeClient
 			if (playing)
 			{
 				playing = false;
+				tmrInternet.Stop();
 
 				audioPlayer.Stop();
 

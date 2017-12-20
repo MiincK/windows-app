@@ -36,22 +36,26 @@ namespace ListenMoeClient
 		static Dictionary<Type, Func<string, (bool Success, object Result)>> parseActions = new Dictionary<Type, Func<string, (bool, object)>>()
 		{
 			{ typeof(int), s => {
-				bool success = int.TryParse(s, out int i);
+				int i;
+				bool success = int.TryParse(s, out i);
 				return (success, i);
 			}},
 			{ typeof(float), s => {
-				bool success = float.TryParse(s, out float f);
+				float f;
+				bool success = float.TryParse(s, out f);
 				return (success, f);
 			}},
 			{ typeof(bool), s => {
-				bool success = bool.TryParse(s, out bool b);
+				bool b;
+				bool success = bool.TryParse(s, out b);
 				return (success, b);
 			}},
 			{ typeof(string), s => {
 				return (true, s);
 			}},
 			{ typeof(Color), s => {
-				if (int.TryParse(s.Replace("#", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int argb))
+				int argb;
+				if (int.TryParse(s.Replace("#", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out argb))
 					return (true, Color.FromArgb(255, Color.FromArgb(argb)));
 				else
 					throw new Exception("Could not parse color '" + s + "'. Check your settings file for any errors.");
