@@ -227,7 +227,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(46)))), ((int)(((byte)(59)))));
-			this.ClientSize = new System.Drawing.Size(512, 48);
+			this.ClientSize = new System.Drawing.Size(460, 48);
 			this.Controls.Add(this.gridPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MinimumSize = new System.Drawing.Size(96, 48);
