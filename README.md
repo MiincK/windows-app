@@ -14,14 +14,10 @@ The window will snap to the edges of your screen, and you can mouse scroll on th
 Download the latest release from [here](https://github.com/anonymousthing/ListenMoeClient/releases) and run it.
 
 ## Updates
-Auto-updates are baked into the app (updates are checked on startup only though), which will check for updates, download the latest version and restart the app automatically for you if you click OK. It backs up your older version to `ListenMoe.bak` in the same folder. You can disable update checking on startup by enabling "Ignore updates" in the settings screen.
-If you have disabled updates and find that music no longer plays/song info no longer updates, you may want to check for updates; we may have changed the stream/song info API.
-
-## Hide from alt-tab
-If you would like to hide the program from your alt-tab menu, open `listenMoeSettings.ini` and change the line `bHideFromAltTab=False` to `bHideFromAltTab=True`. A side effect of hiding it from the alt-tab menu is that it will no longer appear in your taskbar either. As such, if this setting is enabled, the System Tray icon will be visible at all times regardless of the "Close to Tray" option. I do not currently have a UI setting for this, as an unsuspecting user may enable it and then "lose" the app underneath many other windows (and not notice the System Tray icon). 
+Auto-updates are baked into the app (updates are checked on startup only though), which will check for updates, download the latest version and restart the app automatically for you if you click OK. It backs up your older version to `ListenMoe.bak` in the same folder.
 
 ## Other notes
-If you find yourself unable to see the window (for example if you disconnect a monitor, or change your monitor resolutions), delete `listenMoeSettings.ini` and restart the application. This will reset the remembered location.
+If you find yourself unable to see the window (for example if you disconnect a monitor, or change your monitor resolutions), if your app is in tray, you can just right click tray icon and select "Reset Location". Otherwise, just delete `listenMoeSettings.ini` and restart the application. This will reset the remembered location.
 
 # Todo
  - Code cleanup (let's face it, this will never happen)
