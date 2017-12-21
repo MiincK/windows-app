@@ -1,13 +1,37 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace ListenMoeClient
 {
-	class AudioPlayer : IDisposable
+	/// <summary>
+	/// Audio Output Device Object
+	/// </summary>
+	public class AudioDevice
+	{
+		public DirectSoundDeviceInfo DeviceInfo;
+		public string Name;
+
+		public AudioDevice(DirectSoundDeviceInfo deviceInfo, string name)
+		{
+			this.DeviceInfo = deviceInfo;
+			this.Name = name;
+		}
+
+		public override string ToString()
+		{
+			return this.Name;
+		}
+	}
+
+	public class AudioPlayer : IDisposable
 	{
 		BufferedWaveProvider provider;
-		WaveOut waveOut = new WaveOut();
+		DirectSoundOut directOut;
+		SampleChannel volumeChannel;
+		public Guid CurrentDeviceGuid { get; private set; } = Guid.NewGuid();
 
 		Queue<short[]> samplesToPlay = new Queue<short[]>();
 
@@ -19,27 +43,50 @@ namespace ListenMoeClient
 				BufferDuration = TimeSpan.FromSeconds(5),
 				DiscardOnBufferOverflow = true
 			};
-			waveOut.Init(provider);
-			waveOut.Volume = Settings.Get<float>("Volume");
+
+			volumeChannel = new SampleChannel(provider);
+			volumeChannel.Volume = Settings.Get<float>("Volume");
+
+			bool success = Guid.TryParse(Settings.Get<string>("OutputDeviceGuid"), out Guid deviceGuid);
+
+			SetAudioOutputDevice(success ? deviceGuid : DirectSoundOut.DSDEVID_DefaultPlayback);
+		}
+
+		/// <summary>
+		/// Intialize the WaveOut Device and set Volume
+		/// </summary>
+		public void Initialize(Guid deviceGuid)
+		{
+			directOut = new DirectSoundOut(deviceGuid);
+			CurrentDeviceGuid = deviceGuid;
+			directOut.Init(volumeChannel);
+
+			Settings.Set("OutputDeviceGuid", deviceGuid.ToString());
+			Settings.WriteSettings();
 		}
 
 		public void Play()
 		{
 			provider.ClearBuffer();
-			waveOut.Play();
+			directOut.Play();
 		}
 
 		public void Stop()
 		{
-			waveOut.Stop();
+			directOut.Stop();
 			provider.ClearBuffer();
 		}
 
 		public void Dispose()
 		{
-			waveOut.Stop();
-			provider.ClearBuffer();
-			waveOut.Dispose();
+			if (directOut != null)
+			{
+				directOut.Stop();
+				directOut.Dispose();
+			}
+
+			if (provider != null)
+				provider.ClearBuffer();
 		}
 
 		public void QueueBuffer(short[] samples)
@@ -59,13 +106,46 @@ namespace ListenMoeClient
 
 		public float AddVolume(float vol)
 		{
-			SetVolume(waveOut.Volume + vol);
-			return waveOut.Volume;
+			SetVolume(volumeChannel.Volume + vol);
+			return volumeChannel.Volume;
 		}
 
 		public void SetVolume(float vol)
 		{
-			waveOut.Volume = BoundVolume(vol);
+			volumeChannel.Volume = BoundVolume(vol);
+		}
+
+		/// <summary>
+		/// Get an array of the available audio output devices.
+		/// <para>Because of a limitation of WaveOut, device's names will be cut if they are too long.</para>
+		/// </summary>
+		public AudioDevice[] GetAudioOutputDevices()
+		{
+			return DirectSoundOut.Devices.Select(d => new AudioDevice(d, d.Description)).ToArray();
+		}
+
+		/// <summary>
+		/// Set the audio output device (if available); Returns current audio device (desired if valid).
+		/// </summary>
+		/// <param name="deviceNumber">Device ID</param>
+		/// <returns></returns>
+		public void SetAudioOutputDevice(Guid deviceGuid)
+		{
+			if (deviceGuid == CurrentDeviceGuid)
+				return;
+
+			PlaybackState prevState = directOut?.PlaybackState ?? PlaybackState.Playing;
+
+			if (directOut != null)
+			{
+				directOut.Stop();
+				directOut.Dispose();
+			}
+
+			Initialize(deviceGuid);
+
+			if (prevState == PlaybackState.Playing)
+				directOut.Play();
 		}
 	}
 }

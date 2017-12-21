@@ -1,18 +1,24 @@
 ﻿using System;
+using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using NAudio.Wave;
 
 namespace ListenMoeClient
 {
+
+
 	public partial class FormSettings : Form
 	{
 		MainForm mainForm;
+		AudioPlayer audioPlayer;
 
-		public FormSettings(MainForm mainForm)
+		public FormSettings(MainForm mainForm, AudioPlayer audioPlayer)
 		{
 			InitializeComponent();
 			this.Icon = Properties.Resources.icon;
 			this.mainForm = mainForm;
+			this.audioPlayer = audioPlayer;
 
 			LoadAndBindCheckboxSetting(cbCloseToTray, "CloseToTray");
 			LoadAndBindCheckboxSetting(cbEnableVisualiser, "EnableVisualiser");
@@ -60,6 +66,8 @@ namespace ListenMoeClient
 				panelNotLoggedIn.Visible = true;
 				panelNotLoggedIn.BringToFront();
 			};
+			
+			reloadAudioDevices();
 		}
 
 		private void NumericUpdateInterval_ValueChanged(object sender, EventArgs e)
@@ -149,6 +157,23 @@ namespace ListenMoeClient
 			Settings.WriteSettings();
 
 			mainForm.ReloadSettings();
+		}
+
+		private void reloadAudioDevices()
+		{
+			dropdownAudioDevices.DataSource = audioPlayer.GetAudioOutputDevices();
+			dropdownAudioDevices.SelectedIndex = Math.Max(0, Array.IndexOf(audioPlayer.GetAudioOutputDevices().Select(a => a.DeviceInfo.Guid).ToArray(), audioPlayer.CurrentDeviceGuid));
+		}
+
+		private void cbAudioDevices_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			AudioDevice selected = (AudioDevice)dropdownAudioDevices.SelectedItem;
+			audioPlayer.SetAudioOutputDevice(selected.DeviceInfo.Guid);
+		}
+
+		private void btnRefreshAudioDevices_Click(object sender, EventArgs e)
+		{
+			reloadAudioDevices();
 		}
 	}
 }

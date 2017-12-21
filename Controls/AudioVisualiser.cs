@@ -34,7 +34,6 @@ namespace ListenMoeClient
 		public AudioVisualiser()
 		{
 			lastFftPoints = new float[fftSize];
-			ReloadSettings();
 		}
 
 		public void SetBounds(Rectangle bounds)
@@ -48,10 +47,13 @@ namespace ListenMoeClient
 			var opacity = (int)Math.Min(Math.Max(Settings.Get<float>("VisualiserTransparency") * 255, 0), 255);
 			visualiserColor = Color.FromArgb(opacity, Settings.Get<Color>("VisualiserColor"));
 
+			if (Bounds.Width == 0 || Bounds.Height == 0)
+				return;
+
 			if (Settings.Get<bool>("VisualiserFadeEdges"))
 			{
 				Color baseColor = Settings.Get<Color>("BaseColor");
-				barBrush = new LinearGradientBrush(new Rectangle(new Point(0, 0), Bounds.Size), baseColor, visualiserColor, LinearGradientMode.Horizontal);
+				barBrush = new LinearGradientBrush(new Rectangle(Point.Empty, Bounds.Size), baseColor, visualiserColor, LinearGradientMode.Horizontal);
 				ColorBlend blend = new ColorBlend
 				{
 					Colors = new Color[] { baseColor, baseColor, visualiserColor, visualiserColor, visualiserColor, baseColor, baseColor },
@@ -200,7 +202,7 @@ namespace ListenMoeClient
 			else
 			{
 				float spacing = Bounds.Width / ((float)noPoints - 1);
-				for (int i = 1; j < noPoints && i < fftPoints.Length; i += resolutionFactor)
+				for (int i = 0; j < noPoints && i < fftPoints.Length; i += resolutionFactor)
 				{
 					var yVal = fftPoints[i];
 					yVal *= Bounds.Height * ScaleFactor * 0.1f;
@@ -213,7 +215,7 @@ namespace ListenMoeClient
 				points[0] = new PointF(0, points[1].Y);
 			}
 
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			g.SmoothingMode = SmoothingMode.HighQuality;
 
 			var scale = Settings.Get<float>("Scale");
 
