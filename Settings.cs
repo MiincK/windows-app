@@ -103,6 +103,7 @@ namespace ListenMoeClient
 			Set("LocationY", 100);
 			Set("VisualiserResolutionFactor", 3);
 			Set("UpdateInterval", 3600); //in seconds
+			Set("InternetDisconnectionTimer", 5);
 			Set("SizeX", 460);
 			Set("SizeY", 48);
 			Set("FftSize", 2048);
