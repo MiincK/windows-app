@@ -17,7 +17,7 @@ Download the latest release from [here](https://github.com/anonymousthing/Listen
 Auto-updates are baked into the app (updates are checked on startup only though), which will check for updates, download the latest version and restart the app automatically for you if you click OK. It backs up your older version to `ListenMoe.bak` in the same folder.
 
 ## Other notes
-If you find yourself unable to see the window (for example if you disconnect a monitor, or change your monitor resolutions), if your app is in tray, you can just right click tray icon and select "Reset Location". Otherwise, just delete `listenMoeSettings.ini` and restart the application. This will reset the remembered location.
+If you find yourself unable to see the window (for example if you disconnect a monitor, or change your monitor resolutions), if your app is in tray, you can just right click tray icon and select `Reset Location`.
 
 # Todo
  - Code cleanup (let's face it, this will never happen)

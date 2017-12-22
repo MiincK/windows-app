@@ -168,8 +168,8 @@ namespace ListenMoeClient
 			this.MouseWheel += Form1_MouseWheel;
 			this.Icon = Properties.Resources.icon;
 
-			notifyIcon1.ContextMenu = contextMenu2;
-			notifyIcon1.Icon = Properties.Resources.icon;
+			trayIcon.ContextMenu = contextMenu2;
+			trayIcon.Icon = Properties.Resources.icon;
 
 			lightFavSprite = SpriteLoader.LoadFavSprite();
 			fadedFavSprite = SpriteLoader.LoadFadedFavSprite();
@@ -319,14 +319,12 @@ namespace ListenMoeClient
 				this.ShowInTaskbar = false;
 				int windowStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
 				SetWindowLong(this.Handle, GWL_EXSTYLE, windowStyle | WS_EX_TOOLWINDOW);
-				notifyIcon1.Visible = true;
 			}
 			else
 			{
 				this.ShowInTaskbar = true;
 				int windowStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
 				SetWindowLong(this.Handle, GWL_EXSTYLE, windowStyle & ~WS_EX_TOOLWINDOW);
-				notifyIcon1.Visible = false;
 			}
 
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
@@ -559,9 +557,6 @@ namespace ListenMoeClient
 		{
 			if (Settings.Get<bool>("CloseToTray"))
 			{
-				if (!Settings.Get<bool>("HideFromAltTab"))
-					notifyIcon1.Visible = true;
-
 				this.Hide();
 			}
 			else
@@ -601,7 +596,7 @@ namespace ListenMoeClient
 				SettingsForm.Close();
 			}
 			this.Hide();
-			notifyIcon1.Visible = false;
+			trayIcon.Visible = false;
 			await player.Dispose();
 			Environment.Exit(0);
 		}
@@ -654,7 +649,7 @@ namespace ListenMoeClient
 			await Exit();
 		}
 
-		private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+		private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 				Restore();
@@ -670,9 +665,6 @@ namespace ListenMoeClient
 			WindowState = FormWindowState.Normal;
 			this.Show();
 			this.Activate();
-			
-			if (!Settings.Get<bool>("HideFromAltTab"))
-				notifyIcon1.Visible = false;
 		}
 
 		int currentFrame = 0;

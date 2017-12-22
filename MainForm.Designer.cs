@@ -31,7 +31,7 @@
 			this.components = new System.ComponentModel.Container();
 			this.contextMenu1 = new System.Windows.Forms.ContextMenu();
 			this.menuItemCopySongInfo = new System.Windows.Forms.MenuItem();
-			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.contextMenu2 = new System.Windows.Forms.ContextMenu();
 			this.menuItemPlayPause = new System.Windows.Forms.MenuItem();
 			this.menuItemShow = new System.Windows.Forms.MenuItem();
@@ -68,9 +68,9 @@
 			// 
 			// notifyIcon1
 			// 
-			this.notifyIcon1.Text = "Listen.moe";
-			this.notifyIcon1.Visible = true;
-			this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+			this.trayIcon.Text = "Listen.moe";
+			this.trayIcon.Visible = true;
+			this.trayIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDoubleClick);
 			// 
 			// contextMenu2
 			// 
@@ -261,7 +261,7 @@
 		private BetterPictureBox picSettings;
 		private BetterPictureBox picFavourite;
 		private System.Windows.Forms.Panel panelRight;
-		private System.Windows.Forms.NotifyIcon notifyIcon1;
+		private System.Windows.Forms.NotifyIcon trayIcon;
 		private System.Windows.Forms.ContextMenu contextMenu2;
 		private System.Windows.Forms.MenuItem menuItemExit;
 		private System.Windows.Forms.MenuItem menuItemShow;
