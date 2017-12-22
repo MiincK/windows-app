@@ -137,6 +137,7 @@ namespace ListenMoeClient
 		int gripSize = 16;
 		Rectangle gripRect = new Rectangle();
 		Rectangle rightEdgeRect = new Rectangle();
+		Rectangle leftEdgeRect = new Rectangle();
 
 		bool spriteColorInverted = false;
 
@@ -227,16 +228,21 @@ namespace ListenMoeClient
 				VisualStyleRenderer renderer = new VisualStyleRenderer(VisualStyleElement.Status.Gripper.Normal);
 				renderer.DrawBackground(e.Graphics, gripRect);
 			}
+
+			//Expose 2px on the left for resizing, so we paint it the same colour so it's not noticeable
+			e.Graphics.FillRectangle(new SolidBrush(Settings.Get<Color>("AccentColor")), new Rectangle(0, 0, 2, this.ClientRectangle.Height));
 		}
 
 		private void UpdatePanelExcludedRegions()
 		{
 			gripRect = new Rectangle(this.ClientRectangle.Width - gripSize, this.ClientRectangle.Height - gripSize, gripSize, gripSize);
 			rightEdgeRect = new Rectangle(this.ClientRectangle.Width - 2, 0, 2, this.ClientRectangle.Height);
+			leftEdgeRect = new Rectangle(0, 0, 2, this.ClientRectangle.Height);
 
 			var region = new Region(new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height));
 			region.Exclude(gripRect);
 			region.Exclude(rightEdgeRect);
+			region.Exclude(leftEdgeRect);
 			gridPanel.Region = region;
 			panelRight.Region = region;
 		}
@@ -268,6 +274,8 @@ namespace ListenMoeClient
 					m.Result = (IntPtr)17;
 				else if (rightEdgeRect.Contains(pos))
 					m.Result = (IntPtr)11;
+				else if (leftEdgeRect.Contains(pos))
+					m.Result = (IntPtr)10;
 				return;
 			}
 			if (m.Msg == Program.WM_SHOWME)
@@ -323,6 +331,7 @@ namespace ListenMoeClient
 
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			RawInput.RegisterCallback(VirtualKeys.MediaPlayPause, async () => await TogglePlayback());
+			this.Invalidate();
 		}
 
 		public void ReloadScale()
@@ -722,15 +731,21 @@ namespace ListenMoeClient
 
 		private async void picFavourite_Click(object sender, EventArgs e)
 		{
-			bool favouriteStatus = songInfoStream.currentInfo.extended?.favorite ?? false;
-			picFavourite.Image = favouriteStatus ? fadedFavSprite.Frames[1] : fadedFavSprite.Frames[0];
+			bool currentStatus = songInfoStream.currentInfo.extended?.favorite ?? false;
+			bool newStatus = !currentStatus;
+			if (songInfoStream.currentInfo.extended == null)
+				songInfoStream.currentInfo.extended = new ExtendedSongInfo();
+			songInfoStream.currentInfo.extended.favorite = newStatus;
+
+			SetFavouriteSprite(newStatus);
 
 			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>("Token"), new Dictionary<string, string>() {
 				["song"] = songInfoStream.currentInfo.song_id.ToString()
 			});
 
 			var response = Json.Parse<FavouritesResponse>(result);
-			SetFavouriteSprite(response.favorite);
+			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] : 
+				spriteColorInverted ? darkFavSprite.Frames[0] : favSprite.Frames[0];
 		}
 
 		private void menuItemResetLocation_Click(object sender, EventArgs e)
