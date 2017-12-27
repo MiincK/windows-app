@@ -47,8 +47,8 @@ namespace ListenMoeClient
 	//I should have just used a json serialiser
 	static class Settings
 	{
-		public const int DEFAULT_WIDTH = 512;
-		public const int DEFAULT_HEIGHT = 58;
+		public const int DEFAULT_WIDTH = 460;
+		public const int DEFAULT_HEIGHT = 54;
 		public const int DEFAULT_RIGHT_PANEL_WIDTH = 56;
 		public const int DEFAULT_PLAY_PAUSE_SIZE = 18;
 
