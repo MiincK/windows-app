@@ -163,6 +163,7 @@ namespace ListenMoeClient
 
 			//Skip page if CRC does not match
 			uint calculatedCrc = CalculateChecksum(pageBytes);
+			Console.WriteLine(BitConverter.ToUInt32(crc, 0) + ":" + calculatedCrc);
 			if (calculatedCrc != BitConverter.ToUInt32(crc, 0))
 				return new List<byte[]>();
 

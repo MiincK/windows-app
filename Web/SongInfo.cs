@@ -92,7 +92,7 @@ namespace ListenMoeClient
 		{
 			try
 			{
-				socket.Send("{ \"token\": \"" + Settings.Get<string>("Token") + "\" }");
+				socket.Send("{ \"token\": \"" + Settings.Get<string>(Setting.Token) + "\" }");
 			} catch (Exception) { }
 		}
 
@@ -107,6 +107,7 @@ namespace ListenMoeClient
 				currentInfo.anime_name = currentInfo.anime_name.Trim().Replace('\n', ' ');
 				currentInfo.artist_name = currentInfo.artist_name.Trim().Replace('\n', ' ');
 				currentInfo.song_name = currentInfo.song_name.Trim().Replace('\n', ' ');
+				currentInfo.requested_by = currentInfo.requested_by.Trim().Replace('\n', ' ');
 
 				factory.StartNew(() =>
 				{

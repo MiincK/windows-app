@@ -24,7 +24,7 @@ namespace ListenMoeClient
 
 		public WebStreamPlayer(string url)
 		{
-			tmrInternet = new System.Timers.Timer(Settings.Get<int>("InternetDisconnectionTimer") * 1000);
+			tmrInternet = new System.Timers.Timer(Settings.Get<int>(Setting.InternetTimeout) * 1000);
 			tmrInternet.Elapsed += InternetDisconnected;
 			this.url = url;
 		}
