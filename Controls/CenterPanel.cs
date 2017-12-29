@@ -67,7 +67,7 @@ namespace ListenMoeClient
 			{
 				Brush brush = new SolidBrush(updateState == UpdateState.InProgress ? Color.Yellow : Color.LimeGreen);
 				//48px for pause/play button, 75 for the RHS area
-				e.Graphics.FillRectangle(brush, 48, this.Height - 3, (this.Width - 48 - 75) * updatePercent, 3);
+				e.Graphics.FillRectangle(brush, 0, this.Height - 3, this.Width * updatePercent, 3);
 			}
 
 			this.ResumeLayout();
