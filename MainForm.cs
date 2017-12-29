@@ -84,8 +84,8 @@ namespace ListenMoeClient
 
 					this.Location = new Point(finalX, finalY);
 
-					Settings.Set("LocationX", this.Location.X);
-					Settings.Set("LocationY", this.Location.Y);
+					Settings.Set(Setting.LocationX, this.Location.X);
+					Settings.Set(Setting.LocationY, this.Location.Y);
 					Settings.WriteSettings();
 				}
 			}
@@ -119,7 +119,7 @@ namespace ListenMoeClient
 		Font volumeFont;
 		float currentScale = 1f;
 
-		
+
 		public FormSettings SettingsForm;
 
 		Sprite favSprite;
@@ -171,13 +171,9 @@ namespace ListenMoeClient
 			trayIcon.ContextMenu = contextMenu2;
 			trayIcon.Icon = Properties.Resources.icon;
 
-			lightFavSprite = SpriteLoader.LoadFavSprite();
-			fadedFavSprite = SpriteLoader.LoadFadedFavSprite();
-			darkFavSprite = SpriteLoader.LoadDarkFavSprite();
-			favSprite = lightFavSprite;
-			picFavourite.Image = favSprite.Frames[0];
+			LoadFavSprite(false);
 
-			if (Settings.Get<bool>("ThumbnailButton"))
+			if (Settings.Get<bool>(Setting.ThumbnailButton))
 			{
 				button = new ThumbnailToolBarButton(Properties.Resources.pause_ico, "Pause");
 				button.Click += async (_, __) => await TogglePlayback();
@@ -205,7 +201,29 @@ namespace ListenMoeClient
 			this.SizeChanged += MainForm_SizeChanged;
 			UpdatePanelExcludedRegions();
 		}
+		private async void LoadFavSprite(bool heart)
+		{
+			await Task.Run(() =>
+			{
+				Bitmap spritesheet = heart ? Properties.Resources.heart_sprite : Properties.Resources.fav_sprite;
+				int frameSize = heart ? 400 : 256;
+				lightFavSprite = SpriteLoader.LoadFavSprite(spritesheet, frameSize);
+				fadedFavSprite = SpriteLoader.LoadFadedFavSprite(spritesheet, frameSize);
+				darkFavSprite = SpriteLoader.LoadDarkFavSprite(spritesheet, frameSize);
+				favSprite = lightFavSprite;
+			});
 
+			picFavourite.ResetScale();
+			if (heart)
+				picFavourite.Size = new Size(48, 48);
+			else
+				picFavourite.Size = new Size(32, 32);
+
+			bool favourite = songInfoStream?.currentInfo.extended?.favorite ?? false;
+			picFavourite.Image = favourite ? favSprite.Frames[favSprite.Frames.Length - 1] : favSprite.Frames[0];
+
+			ReloadScale();
+		}
 		private Color ScaleColor(Color color, float multiplier)
 		{
 			byte BoundToByte(float f)
@@ -230,7 +248,7 @@ namespace ListenMoeClient
 			}
 
 			//Expose 2px on the left for resizing, so we paint it the same colour so it's not noticeable
-			e.Graphics.FillRectangle(new SolidBrush(Settings.Get<Color>("AccentColor")), new Rectangle(0, 0, 2, this.ClientRectangle.Height));
+			e.Graphics.FillRectangle(new SolidBrush(Settings.Get<Color>(Setting.AccentColor)), new Rectangle(0, 0, 2, this.ClientRectangle.Height));
 		}
 
 		private void UpdatePanelExcludedRegions()
@@ -256,8 +274,8 @@ namespace ListenMoeClient
 			//wow such performance
 			//TODO: don't make this write to disk on every resize event
 			//Settings buffering would be nice
-			Settings.Set("SizeX", Width);
-			Settings.Set("SizeY", Height);
+			Settings.Set(Setting.SizeX, Width);
+			Settings.Set(Setting.SizeY, Height);
 			Settings.WriteSettings();
 		}
 
@@ -287,24 +305,24 @@ namespace ListenMoeClient
 
 		public void ReloadSettings()
 		{
-			this.TopMost = Settings.Get<bool>("TopMost");
+			this.TopMost = Settings.Get<bool>(Setting.TopMost);
 
-			this.Location = new Point(Settings.Get<int>("LocationX"), Settings.Get<int>("LocationY"));
-			this.Size = new Size(Settings.Get<int>("SizeX"), Settings.Get<int>("SizeY"));
+			this.Location = new Point(Settings.Get<int>(Setting.LocationX), Settings.Get<int>(Setting.LocationY));
+			this.Size = new Size(Settings.Get<int>(Setting.SizeX), Settings.Get<int>(Setting.SizeY));
 
-			if (Settings.Get<bool>("EnableVisualiser"))
+			if (Settings.Get<bool>(Setting.EnableVisualiser))
 				centerPanel.StartVisualiser(player);
 			else
 				centerPanel.StopVisualiser(player);
 			centerPanel.ReloadVisualiser();
 
-			float vol = Settings.Get<float>("Volume");
-			Color accentColor = Settings.Get<Color>("AccentColor");
+			float vol = Settings.Get<float>(Setting.Volume);
+			Color accentColor = Settings.Get<Color>(Setting.AccentColor);
 			panelPlayBtn.BackColor = accentColor;
 			spriteColorInverted = accentColor.R + accentColor.G + accentColor.B > 128 * 3;
 			ReloadSprites();
 
-			Color baseColor = Settings.Get<Color>("BaseColor");
+			Color baseColor = Settings.Get<Color>(Setting.BaseColor);
 			centerPanel.BackColor = baseColor;
 			panelRight.BackColor = Color.FromArgb((int)((baseColor.R * 1.1f).Bound(0, 255)),
 				(int)((baseColor.G * 1.1f).Bound(0, 255)),
@@ -312,9 +330,9 @@ namespace ListenMoeClient
 			this.BackColor = panelRight.BackColor;
 
 			SetVolumeLabel(vol);
-			this.Opacity = Settings.Get<float>("FormOpacity");
+			this.Opacity = Settings.Get<float>(Setting.FormOpacity);
 
-			if (Settings.Get<bool>("HideFromAltTab"))
+			if (Settings.Get<bool>(Setting.HideFromAltTab))
 			{
 				this.ShowInTaskbar = false;
 				int windowStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
@@ -334,10 +352,10 @@ namespace ListenMoeClient
 
 		public void ReloadScale()
 		{
-			float scaleFactor = Settings.Get<float>("Scale");
+			float scaleFactor = Settings.Get<float>(Setting.Scale);
 			this.Scale(new SizeF(scaleFactor / currentScale, scaleFactor / currentScale));
 			currentScale = scaleFactor;
-			
+
 			gridPanel.SetRows("100%");
 			int playPauseWidth = (int)(48 * scaleFactor);
 			int rightPanelWidth = (int)(75 * scaleFactor);
@@ -347,13 +365,13 @@ namespace ListenMoeClient
 			//Reload fonts to get newly scaled font sizes
 			LoadFonts();
 			SetPlayPauseSize(false);
-			
+
 		}
 
 		private void LoadFonts()
 		{
 			var family = Meiryo.GetFontFamily();
-			var scaleFactor = Settings.Get<float>("Scale");
+			var scaleFactor = Settings.Get<float>(Setting.Scale);
 			titleFont = new Font(family, 12 * scaleFactor);
 			albumFont = Meiryo.GetFont(8 * scaleFactor);
 			volumeFont = Meiryo.GetFont(8 * scaleFactor);
@@ -387,7 +405,7 @@ namespace ListenMoeClient
 					await factory.StartNew(() => picFavourite.Visible = false);
 					await Task.Run(() => songInfoStream.Reconnect());
 				};
-				string savedToken = Settings.Get<string>("Token").Trim();
+				string savedToken = Settings.Get<string>(Setting.Token).Trim();
 				if (savedToken != "")
 					await User.Login(savedToken);
 			});
@@ -418,10 +436,10 @@ namespace ListenMoeClient
 				long last = stopwatch.ElapsedMilliseconds;
 				while (!ct.IsCancellationRequested)
 				{
-					if (stopwatch.ElapsedMilliseconds - last > Settings.Get<int>("UpdateInterval") * 1000)
+					if (stopwatch.ElapsedMilliseconds - last > Settings.Get<int>(Setting.UpdateInterval) * 1000)
 					{
 						//We only check for the setting here, because I'm lazy to dispose/recreate this checker thread when they change the setting
-						if (!Settings.Get<bool>("UpdateAutocheck"))
+						if (!Settings.Get<bool>(Setting.UpdateAutocheck))
 						{
 							last = stopwatch.ElapsedMilliseconds;
 							continue;
@@ -469,7 +487,7 @@ namespace ListenMoeClient
 					float newVol = player.AddVolume(volumeChange);
 					if (newVol >= 0)
 					{
-						Settings.Set("Volume", newVol);
+						Settings.Set(Setting.Volume, newVol);
 						Settings.WriteSettings();
 						SetVolumeLabel(newVol);
 					}
@@ -497,7 +515,7 @@ namespace ListenMoeClient
 				else
 					picPlayPause.Image = Properties.Resources.play;
 
-				picSettings.Image = Properties.Resources.up_inverted;
+				picSettings.Image = Properties.Resources.cog_inverted;
 				picClose.Image = Properties.Resources.close_inverted;
 				centerPanel.SetLabelBrush(Brushes.Black);
 				lblVol.ForeColor = Color.Black;
@@ -511,12 +529,14 @@ namespace ListenMoeClient
 				else
 					picPlayPause.Image = Properties.Resources.play;
 
-				picSettings.Image = Properties.Resources.up;
+				picSettings.Image = Properties.Resources.cog;
 				picClose.Image = Properties.Resources.close;
 				centerPanel.SetLabelBrush(Brushes.White);
 				lblVol.ForeColor = Color.White;
 				favSprite = lightFavSprite;
 			}
+
+			if (favSprite == null) return;
 
 			if (songInfoStream?.currentInfo.extended?.favorite ?? false)
 				picFavourite.Image = favSprite.Frames[favSprite.Frames.Length - 1];
@@ -531,7 +551,7 @@ namespace ListenMoeClient
 				Task stopTask = player.Stop();
 				ReloadSprites();
 				menuItemPlayPause.Text = "Play";
-				if (Settings.Get<bool>("ThumbnailButton") && !Settings.Get<bool>("HideFromAltTab"))
+				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
 				{
 					button.Icon = Properties.Resources.play_ico;
 					button.Tooltip = "Play";
@@ -544,7 +564,7 @@ namespace ListenMoeClient
 				player.Play();
 				ReloadSprites();
 				menuItemPlayPause.Text = "Pause";
-				if (Settings.Get<bool>("ThumbnailButton") && !Settings.Get<bool>("HideFromAltTab"))
+				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
 				{
 					button.Icon = Properties.Resources.pause_ico;
 					button.Tooltip = "Pause";
@@ -555,7 +575,7 @@ namespace ListenMoeClient
 
 		private void picClose_Click(object sender, EventArgs e)
 		{
-			if (Settings.Get<bool>("CloseToTray"))
+			if (Settings.Get<bool>(Setting.CloseToTray))
 			{
 				this.Hide();
 			}
@@ -615,7 +635,7 @@ namespace ListenMoeClient
 
 		private void SetPlayPauseSize(bool bigger)
 		{
-			var scale = Settings.Get<float>("Scale");
+			var scale = Settings.Get<float>(Setting.Scale);
 			int playPauseSize = bigger ? 18 : 16;
 			int picPlayPauseX = bigger ? 15 : 16;
 
@@ -685,6 +705,7 @@ namespace ListenMoeClient
 
 		private async void SetFavouriteSprite(bool favourited)
 		{
+			if (favSprite == null) return;
 			picFavourite.Visible = true;
 			if (favourited)
 			{
@@ -731,19 +752,20 @@ namespace ListenMoeClient
 
 			SetFavouriteSprite(newStatus);
 
-			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>("Token"), new Dictionary<string, string>() {
+			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>(Setting.Token), new Dictionary<string, string>()
+			{
 				["song"] = songInfoStream.currentInfo.song_id.ToString()
 			});
 
 			var response = Json.Parse<FavouritesResponse>(result);
-			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] : 
+			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] :
 				spriteColorInverted ? darkFavSprite.Frames[0] : favSprite.Frames[0];
 		}
 
 		private void menuItemResetLocation_Click(object sender, EventArgs e)
 		{
-			Settings.Set("LocationX", 0);
-			Settings.Set("LocationY", 0);
+			Settings.Set(Setting.LocationX, 0);
+			Settings.Set(Setting.LocationY, 0);
 			Settings.WriteSettings();
 			this.Location = new Point(0, 0);
 		}

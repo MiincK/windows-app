@@ -191,7 +191,7 @@
 			this.picSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.picSettings.BackColor = System.Drawing.Color.Transparent;
 			this.picSettings.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.picSettings.Image = global::ListenMoeClient.Properties.Resources.up;
+			this.picSettings.Image = global::ListenMoeClient.Properties.Resources.cog;
 			this.picSettings.Location = new System.Drawing.Point(36, 5);
 			this.picSettings.Name = "picSettings";
 			this.picSettings.Size = new System.Drawing.Size(12, 12);
