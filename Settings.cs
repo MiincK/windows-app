@@ -48,7 +48,7 @@ namespace ListenMoeClient
 	static class Settings
 	{
 		public const int DEFAULT_WIDTH = 460;
-		public const int DEFAULT_HEIGHT = 54;
+		public const int DEFAULT_HEIGHT = 48;
 		public const int DEFAULT_RIGHT_PANEL_WIDTH = 56;
 		public const int DEFAULT_PLAY_PAUSE_SIZE = 18;
 

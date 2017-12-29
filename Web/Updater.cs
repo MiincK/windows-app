@@ -28,7 +28,7 @@ namespace ListenMoeClient
 			public string name { get; set; }
 		}
 
-		private const string UPDATE_ENDPOINT = "https://api.github.com/repos/LISTEN-moe/windows-app/releases/latest";
+		private const string UPDATE_ENDPOINT = "https://api.github.com/repos/MiincK/windows-app/releases/latest";
 
 		public static async Task<bool> CheckGithubVersion()
 		{

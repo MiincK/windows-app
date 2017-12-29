@@ -144,6 +144,7 @@ namespace ListenMoeClient
 		public MainForm()
 		{
 			InitializeComponent();
+			this.MinimumSize = new Size(Settings.DEFAULT_WIDTH, Settings.DEFAULT_HEIGHT);
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
 			centerPanel.MouseDown += Form1_MouseDown;
