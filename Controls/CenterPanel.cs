@@ -132,7 +132,7 @@ namespace ListenMoeClient
 
 		public void ReloadVisualiser()
 		{
-			Visualiser.ReloadSettings();
+			Visualiser?.ReloadSettings();
 		}
 	}
 }
