@@ -17,13 +17,10 @@ namespace ListenMoeClient
 
 	class CenterPanel : Panel
 	{
-		public AudioVisualiser Visualiser = new AudioVisualiser();
+		public AudioVisualiser Visualiser { get; set; }
 
-		MarqueeLabel lblArtist = new MarqueeLabel();
+		MarqueeLabel lblAlbum = new MarqueeLabel();
 		MarqueeLabel lblTitle = new MarqueeLabel();
-		MarqueeLabel lblEvent = new MarqueeLabel();
-		int eventBarHeight = 16;
-		bool isEventOrRequest = false;
 
 		float updatePercent = 0;
 		UpdateState updateState;
@@ -32,32 +29,15 @@ namespace ListenMoeClient
 		{
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
-			lblArtist.Text = "Connecting...";
-			lblEvent.Centered = true;
+			lblTitle.Text = "Connecting...";
 			RecalculateMarqueeBounds();
-
-			Visualiser.SetBounds(new Rectangle(0, 0, this.Width, this.Height));
-			Visualiser.ReloadSettings();
 		}
 
 		private void RecalculateMarqueeBounds()
 		{
-			float scale = Settings.Get<float>(Setting.Scale);
-
-			lblEvent.Bounds = new Rectangle(0, (int)(scale + this.Height - eventBarHeight * scale), this.Width, (int)(eventBarHeight * scale));
-			if (isEventOrRequest)
-			{
-				lblArtist.Bounds = new Rectangle((int)(8 * scale), (int)(4 * scale), this.Width, this.Height);
-				lblTitle.Bounds = new Rectangle((int)(6 * scale), (int)(18 * scale), this.Width, this.Height);
-			}
-			else
-			{
-				lblArtist.Bounds = new Rectangle((int)(8 * scale), (int)(13 * scale), this.Width, this.Height);
-				lblTitle.Bounds = new Rectangle((int)(6 * scale), (int)(28 * scale), this.Width, this.Height);
-			}
-
-			lblEvent.RecalculateBounds();
-			lblArtist.RecalculateBounds();
+			lblAlbum.Bounds = new Rectangle(5, 26, this.Width, this.Height);
+			lblTitle.Bounds = new Rectangle(5, 5, this.Width, this.Height);
+			lblAlbum.RecalculateBounds();
 			lblTitle.RecalculateBounds();
 		}
 
@@ -66,7 +46,8 @@ namespace ListenMoeClient
 			base.OnResize(eventargs);
 
 			RecalculateMarqueeBounds();
-			Visualiser.SetBounds(new Rectangle(0, 0, this.Width, this.Height));
+			if (Visualiser != null)
+				Visualiser.SetBounds(new Rectangle(0, 0, this.Width, this.Height));
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -75,24 +56,18 @@ namespace ListenMoeClient
 
 			this.SuspendLayout();
 
-			Visualiser.Render(e.Graphics);
-			lblTitle.Render(e.Graphics);
-			lblArtist.Render(e.Graphics);
-
-			if (isEventOrRequest)
+			if (Visualiser != null)
 			{
-				float scale = Settings.Get<float>(Setting.Scale);
-
-				Brush brush = new SolidBrush(Color.FromArgb(64, 0, 0, 0));
-				e.Graphics.FillRectangle(brush, 0, this.Height - eventBarHeight * scale, this.Width, eventBarHeight * scale);
-				lblEvent.Render(e.Graphics);
+				Visualiser.Render(e.Graphics);
 			}
+			lblTitle.Render(e.Graphics);
+			lblAlbum.Render(e.Graphics);
 
 			if (updateState != 0)
 			{
 				Brush brush = new SolidBrush(updateState == UpdateState.InProgress ? Color.Yellow : Color.LimeGreen);
-				//Height for pause/play button
-				e.Graphics.FillRectangle(brush, Settings.DEFAULT_HEIGHT, this.Height - 3, (this.Width - Settings.DEFAULT_HEIGHT- Settings.DEFAULT_RIGHT_PANEL_WIDTH) * updatePercent, 3);
+				//48px for pause/play button, 75 for the RHS area
+				e.Graphics.FillRectangle(brush, 48, this.Height - 3, (this.Width - 48 - 75) * updatePercent, 3);
 			}
 
 			this.ResumeLayout();
@@ -110,47 +85,49 @@ namespace ListenMoeClient
 			this.Invalidate();
 		}
 
-		public void SetLabelText(string titleText, string artistText, string albumText, string eventText, bool isEventOrRequest)
+		public void SetLabelText(string titleText, string subtitleText, string albumText)
 		{
 			lblTitle.Text = titleText;
-			lblArtist.Text = artistText;
-			if (!string.IsNullOrWhiteSpace(albumText))
-				lblArtist.Text += " - " + albumText;
-			lblEvent.Text = eventText;
-
-			this.isEventOrRequest = isEventOrRequest;
-			RecalculateMarqueeBounds();
+			lblTitle.Subtext = subtitleText;
+			lblAlbum.Text = albumText;
 		}
 
 		public void SetLabelBrush(Brush brush)
 		{
 			lblTitle.FontBrush = brush;
-			lblArtist.FontBrush = brush;
-			lblEvent.FontBrush = brush;
+			lblAlbum.FontBrush = brush;
 		}
 
 		public void SetFonts(Font titleFont, Font albumFont)
 		{
 			lblTitle.Font = titleFont;
 			lblTitle.Subfont = albumFont;
-			lblArtist.Font = albumFont;
-			lblEvent.Font = albumFont;
+			lblAlbum.Font = albumFont;
 
 			lblTitle.RecalculateBounds();
-			lblArtist.RecalculateBounds();
-			lblEvent.RecalculateBounds();
+			lblAlbum.RecalculateBounds();
 		}
-
+		
 		public void StartVisualiser(WebStreamPlayer player)
 		{
-			Visualiser.Start();
-			player.SetVisualiser(Visualiser);
+			if (Visualiser == null)
+			{
+				Visualiser = new AudioVisualiser();
+				Visualiser.SetBounds(new Rectangle(0, 0, this.Width, this.Height));
+				Visualiser.ReloadSettings();
+				Visualiser.Start();
+				player.SetVisualiser(Visualiser);
+			}
 		}
 
 		public void StopVisualiser(WebStreamPlayer player)
 		{
-			player.SetVisualiser(null);
-			Visualiser.Stop();
+			if (Visualiser != null)
+			{
+				player.SetVisualiser(null);
+				Visualiser.Stop();
+				Visualiser = null;
+			}
 		}
 
 		public void ReloadVisualiser()

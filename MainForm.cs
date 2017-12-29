@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -85,8 +84,8 @@ namespace ListenMoeClient
 
 					this.Location = new Point(finalX, finalY);
 
-					Settings.Set(Setting.LocationX, this.Location.X);
-					Settings.Set(Setting.LocationY, this.Location.Y);
+					Settings.Set("LocationX", this.Location.X);
+					Settings.Set("LocationY", this.Location.Y);
 					Settings.WriteSettings();
 				}
 			}
@@ -116,16 +115,17 @@ namespace ListenMoeClient
 		SongInfoStream songInfoStream;
 
 		Font titleFont;
-		Font artistFont;
+		Font albumFont;
 		Font volumeFont;
+		float currentScale = 1f;
 
+		
 		public FormSettings SettingsForm;
 
 		Sprite favSprite;
 		Sprite lightFavSprite;
 		Sprite darkFavSprite;
 		Sprite fadedFavSprite;
-		bool heartFav = false;
 
 		private ThumbnailToolBarButton button;
 
@@ -134,18 +134,16 @@ namespace ListenMoeClient
 		Task updaterTask;
 		Task renderLoop;
 
+		int gripSize = 16;
 		Rectangle gripRect = new Rectangle();
 		Rectangle rightEdgeRect = new Rectangle();
 		Rectangle leftEdgeRect = new Rectangle();
 
-		bool spriteColorInverted = false; //Excluding play/pause icon
-		bool playPauseInverted = false;
+		bool spriteColorInverted = false;
 
 		public MainForm()
 		{
 			InitializeComponent();
-			this.MinimumSize = new Size(Settings.DEFAULT_WIDTH, Settings.DEFAULT_HEIGHT);
-
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
 			centerPanel.MouseDown += Form1_MouseDown;
@@ -173,9 +171,13 @@ namespace ListenMoeClient
 			trayIcon.ContextMenu = contextMenu2;
 			trayIcon.Icon = Properties.Resources.icon;
 
-			LoadFavSprite(heartFav);
+			lightFavSprite = SpriteLoader.LoadFavSprite();
+			fadedFavSprite = SpriteLoader.LoadFadedFavSprite();
+			darkFavSprite = SpriteLoader.LoadDarkFavSprite();
+			favSprite = lightFavSprite;
+			picFavourite.Image = favSprite.Frames[0];
 
-			if (Settings.Get<bool>(Setting.ThumbnailButton))
+			if (Settings.Get<bool>("ThumbnailButton"))
 			{
 				button = new ThumbnailToolBarButton(Properties.Resources.pause_ico, "Pause");
 				button.Click += async (_, __) => await TogglePlayback();
@@ -185,6 +187,7 @@ namespace ListenMoeClient
 			Connect();
 
 			player = new WebStreamPlayer("https://listen.moe/stream");
+			player.SetVisualiser(centerPanel.Visualiser);
 			player.Play();
 
 			renderLoop = Task.Run(() =>
@@ -203,66 +206,41 @@ namespace ListenMoeClient
 			UpdatePanelExcludedRegions();
 		}
 
-		private async void LoadFavSprite(bool heart)
+		private Color ScaleColor(Color color, float multiplier)
 		{
-			await Task.Run(() =>
+			byte BoundToByte(float f)
 			{
-				Bitmap spritesheet = heart ? Properties.Resources.heart_sprite : Properties.Resources.fav_sprite;
-				int frameSize = heart ? 400 : 256;
-				lightFavSprite = SpriteLoader.LoadFavSprite(spritesheet, frameSize);
-				fadedFavSprite = SpriteLoader.LoadFadedFavSprite(spritesheet, frameSize);
-				darkFavSprite = SpriteLoader.LoadDarkFavSprite(spritesheet, frameSize);
-				favSprite = lightFavSprite;
-			});
+				return (byte)(Math.Min(Math.Max(0, f), 255));
+			}
 
-			picFavourite.ResetScale();
-			if (heart)
-				picFavourite.Size = new Size(48, 48);
-			else
-				picFavourite.Size = new Size(32, 32);
-
-			picFavourite.SizeChanged += PicFavourite_SizeChanged;
-
-			bool favourite = songInfoStream?.currentInfo.extended?.favorite ?? false;
-			picFavourite.Image = favourite ? favSprite.Frames[favSprite.Frames.Length - 1] : favSprite.Frames[0];
-
-			ReloadScale();
-		}
-
-		private void PicFavourite_SizeChanged(object sender, EventArgs e)
-		{
-
+			return Color.FromArgb(
+				BoundToByte(color.R * multiplier),
+				BoundToByte(color.G * multiplier),
+				BoundToByte(color.B * multiplier)
+			);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
-
-			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-			e.Graphics.DrawImage(spriteColorInverted ? Properties.Resources.gripper_inverted : Properties.Resources.gripper, gripRect);
+			if (VisualStyleRenderer.IsElementDefined(VisualStyleElement.Status.Gripper.Normal))
+			{
+				VisualStyleRenderer renderer = new VisualStyleRenderer(VisualStyleElement.Status.Gripper.Normal);
+				renderer.DrawBackground(e.Graphics, gripRect);
+			}
 
 			//Expose 2px on the left for resizing, so we paint it the same colour so it's not noticeable
-			e.Graphics.FillRectangle(new SolidBrush(Settings.Get<Color>(Setting.AccentColor)), new Rectangle(0, 0, 2, this.ClientRectangle.Height));
+			e.Graphics.FillRectangle(new SolidBrush(Settings.Get<Color>("AccentColor")), new Rectangle(0, 0, 2, this.ClientRectangle.Height));
 		}
 
 		private void UpdatePanelExcludedRegions()
 		{
-			int width = this.ClientRectangle.Width;
-			int height = this.ClientRectangle.Height;
-			GraphicsPath path = new GraphicsPath();
+			gripRect = new Rectangle(this.ClientRectangle.Width - gripSize, this.ClientRectangle.Height - gripSize, gripSize, gripSize);
+			rightEdgeRect = new Rectangle(this.ClientRectangle.Width - 2, 0, 2, this.ClientRectangle.Height);
+			leftEdgeRect = new Rectangle(0, 0, 2, this.ClientRectangle.Height);
 
-			float scale = Settings.Get<float>(Setting.Scale);
-			int gripSize = (int)(Properties.Resources.gripper.Width * scale);
-			int padding = (int)scale;
-
-			path.AddPolygon(new[] { new Point(width - gripSize * 2 - padding, height), new Point(width, height - gripSize * 2 - padding), new Point(width, height) });
-			gripRect = new Rectangle(width - gripSize - padding, height - gripSize - padding, gripSize, gripSize);
-			rightEdgeRect = new Rectangle(width - 2, 0, 2, height);
-			leftEdgeRect = new Rectangle(0, 0, 2, height);
-
-			var region = new Region(new Rectangle(0, 0, width, height));
-			region.Exclude(path);
+			var region = new Region(new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height));
+			region.Exclude(gripRect);
 			region.Exclude(rightEdgeRect);
 			region.Exclude(leftEdgeRect);
 			gridPanel.Region = region;
@@ -278,8 +256,8 @@ namespace ListenMoeClient
 			//wow such performance
 			//TODO: don't make this write to disk on every resize event
 			//Settings buffering would be nice
-			Settings.Set(Setting.SizeX, Width);
-			Settings.Set(Setting.SizeY, Height);
+			Settings.Set("SizeX", Width);
+			Settings.Set("SizeY", Height);
 			Settings.WriteSettings();
 		}
 
@@ -307,55 +285,36 @@ namespace ListenMoeClient
 			base.WndProc(ref m);
 		}
 
-		public void ReloadScale()
-		{
-			this.Width = Settings.DEFAULT_WIDTH;
-			this.Height = Settings.DEFAULT_HEIGHT;
-			float scaleFactor = Settings.Get<float>(Setting.Scale);
-			this.BetterScale(scaleFactor);
-
-			gridPanel.SetRows("100%");
-			int playPauseWidth = (int)(Settings.DEFAULT_HEIGHT * scaleFactor);
-			int rightPanelWidth = (int)(Settings.DEFAULT_RIGHT_PANEL_WIDTH * scaleFactor);
-			gridPanel.SetColumns($"{playPauseWidth}px auto {rightPanelWidth}px");
-			gridPanel.DefineAreas("playPause centerPanel rightPanel");
-
-			//Reload fonts to get newly scaled font sizes
-			LoadFonts();
-			SetPlayPauseSize(false);
-		}
-
 		public void ReloadSettings()
 		{
-			this.TopMost = Settings.Get<bool>(Setting.TopMost);
+			this.TopMost = Settings.Get<bool>("TopMost");
 
-			this.Location = new Point(Settings.Get<int>(Setting.LocationX), Settings.Get<int>(Setting.LocationY));
-			this.Size = new Size(Settings.Get<int>(Setting.SizeX), Settings.Get<int>(Setting.SizeY));
+			this.Location = new Point(Settings.Get<int>("LocationX"), Settings.Get<int>("LocationY"));
+			this.Size = new Size(Settings.Get<int>("SizeX"), Settings.Get<int>("SizeY"));
 
-			if (Settings.Get<bool>(Setting.EnableVisualiser))
+			if (Settings.Get<bool>("EnableVisualiser"))
 				centerPanel.StartVisualiser(player);
 			else
 				centerPanel.StopVisualiser(player);
 			centerPanel.ReloadVisualiser();
 
-			float vol = Settings.Get<float>(Setting.Volume);
-			Color accentColor = Settings.Get<Color>(Setting.AccentColor);
+			float vol = Settings.Get<float>("Volume");
+			Color accentColor = Settings.Get<Color>("AccentColor");
 			panelPlayBtn.BackColor = accentColor;
-			playPauseInverted = accentColor.R + accentColor.G + accentColor.B > 128 * 3;
-
-			Color baseColor = Settings.Get<Color>(Setting.BaseColor);
-			spriteColorInverted = baseColor.R + baseColor.G + baseColor.B > 128 * 3;
-			centerPanel.BackColor = baseColor;
-			panelRight.BackColor = baseColor.Scale(1.3f);
-
-			//Set form colour to panel right colour so the correct colour shines through during region exclusion
-			this.BackColor = panelRight.BackColor;
+			spriteColorInverted = accentColor.R + accentColor.G + accentColor.B > 128 * 3;
 			ReloadSprites();
 
-			SetVolumeLabel(vol);
-			this.Opacity = Settings.Get<float>(Setting.FormOpacity);
+			Color baseColor = Settings.Get<Color>("BaseColor");
+			centerPanel.BackColor = baseColor;
+			panelRight.BackColor = Color.FromArgb((int)((baseColor.R * 1.1f).Bound(0, 255)),
+				(int)((baseColor.G * 1.1f).Bound(0, 255)),
+				(int)((baseColor.B * 1.1f).Bound(0, 255)));
+			this.BackColor = panelRight.BackColor;
 
-			if (Settings.Get<bool>(Setting.HideFromAltTab))
+			SetVolumeLabel(vol);
+			this.Opacity = Settings.Get<float>("FormOpacity");
+
+			if (Settings.Get<bool>("HideFromAltTab"))
 			{
 				this.ShowInTaskbar = false;
 				int windowStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
@@ -370,27 +329,38 @@ namespace ListenMoeClient
 
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			RawInput.RegisterCallback(VirtualKeys.MediaPlayPause, async () => await TogglePlayback());
-			RawInput.RegisterPassword(new[] {
-				VirtualKeys.Up, VirtualKeys.Up,
-				VirtualKeys.Down, VirtualKeys.Down,
-				VirtualKeys.Left, VirtualKeys.Right,
-				VirtualKeys.Left, VirtualKeys.Right,
-				VirtualKeys.B, VirtualKeys.A,
-				VirtualKeys.Return
-			}, () => LoadFavSprite(heartFav = !heartFav));
 			this.Invalidate();
+		}
+
+		public void ReloadScale()
+		{
+			float scaleFactor = Settings.Get<float>("Scale");
+			this.Scale(new SizeF(scaleFactor / currentScale, scaleFactor / currentScale));
+			currentScale = scaleFactor;
+			
+			gridPanel.SetRows("100%");
+			int playPauseWidth = (int)(48 * scaleFactor);
+			int rightPanelWidth = (int)(75 * scaleFactor);
+			gridPanel.SetColumns($"{playPauseWidth}px auto {rightPanelWidth}px");
+			gridPanel.DefineAreas("playPause centerPanel rightPanel");
+
+			//Reload fonts to get newly scaled font sizes
+			LoadFonts();
+			SetPlayPauseSize(false);
+			
 		}
 
 		private void LoadFonts()
 		{
-			var scaleFactor = Settings.Get<float>(Setting.Scale);
-			titleFont = Meiryo.GetFont(13 * scaleFactor);
-			artistFont = Meiryo.GetFont(8 * scaleFactor);
-			volumeFont = Meiryo.GetFont(9 * scaleFactor);
+			var family = Meiryo.GetFontFamily();
+			var scaleFactor = Settings.Get<float>("Scale");
+			titleFont = new Font(family, 12 * scaleFactor);
+			albumFont = Meiryo.GetFont(8 * scaleFactor);
+			volumeFont = Meiryo.GetFont(8 * scaleFactor);
 
 			lblVol.Font = volumeFont;
 
-			centerPanel.SetFonts(titleFont, artistFont);
+			centerPanel.SetFonts(titleFont, albumFont);
 		}
 
 		private async void Connect()
@@ -417,7 +387,7 @@ namespace ListenMoeClient
 					await factory.StartNew(() => picFavourite.Visible = false);
 					await Task.Run(() => songInfoStream.Reconnect());
 				};
-				string savedToken = Settings.Get<string>(Setting.Token).Trim();
+				string savedToken = Settings.Get<string>("Token").Trim();
 				if (savedToken != "")
 					await User.Login(savedToken);
 			});
@@ -448,10 +418,10 @@ namespace ListenMoeClient
 				long last = stopwatch.ElapsedMilliseconds;
 				while (!ct.IsCancellationRequested)
 				{
-					if (stopwatch.ElapsedMilliseconds - last > Settings.Get<int>(Setting.UpdateInterval) * 1000)
+					if (stopwatch.ElapsedMilliseconds - last > Settings.Get<int>("UpdateInterval") * 1000)
 					{
 						//We only check for the setting here, because I'm lazy to dispose/recreate this checker thread when they change the setting
-						if (!Settings.Get<bool>(Setting.UpdateAutocheck))
+						if (!Settings.Get<bool>("UpdateAutocheck"))
 						{
 							last = stopwatch.ElapsedMilliseconds;
 							continue;
@@ -499,7 +469,7 @@ namespace ListenMoeClient
 					float newVol = player.AddVolume(volumeChange);
 					if (newVol >= 0)
 					{
-						Settings.Set(Setting.Volume, newVol);
+						Settings.Set("Volume", newVol);
 						Settings.WriteSettings();
 						SetVolumeLabel(newVol);
 					}
@@ -522,7 +492,12 @@ namespace ListenMoeClient
 		{
 			if (spriteColorInverted)
 			{
-				picSettings.Image = Properties.Resources.cog_inverted;
+				if (player.IsPlaying())
+					picPlayPause.Image = Properties.Resources.pause_inverted;
+				else
+					picPlayPause.Image = Properties.Resources.play;
+
+				picSettings.Image = Properties.Resources.up_inverted;
 				picClose.Image = Properties.Resources.close_inverted;
 				centerPanel.SetLabelBrush(Brushes.Black);
 				lblVol.ForeColor = Color.Black;
@@ -531,33 +506,22 @@ namespace ListenMoeClient
 			}
 			else
 			{
+				if (player.IsPlaying())
+					picPlayPause.Image = Properties.Resources.pause;
+				else
+					picPlayPause.Image = Properties.Resources.play;
 
-				picSettings.Image = Properties.Resources.cog;
+				picSettings.Image = Properties.Resources.up;
 				picClose.Image = Properties.Resources.close;
 				centerPanel.SetLabelBrush(Brushes.White);
 				lblVol.ForeColor = Color.White;
 				favSprite = lightFavSprite;
 			}
 
-			if (playPauseInverted)
-			{
-				if (player.IsPlaying())
-					picPlayPause.Image = Properties.Resources.pause_inverted;
-				else
-					picPlayPause.Image = Properties.Resources.play;
-			}
-			else
-			{
-				if (player.IsPlaying())
-					picPlayPause.Image = Properties.Resources.pause;
-				else
-					picPlayPause.Image = Properties.Resources.play;
-			}
-
 			if (songInfoStream?.currentInfo.extended?.favorite ?? false)
-				picFavourite.Image = favSprite?.Frames[favSprite.Frames.Length - 1];
+				picFavourite.Image = favSprite.Frames[favSprite.Frames.Length - 1];
 			else
-				picFavourite.Image = favSprite?.Frames[0];
+				picFavourite.Image = favSprite.Frames[0];
 		}
 
 		private async Task TogglePlayback()
@@ -567,13 +531,12 @@ namespace ListenMoeClient
 				Task stopTask = player.Stop();
 				ReloadSprites();
 				menuItemPlayPause.Text = "Play";
-				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
+				if (Settings.Get<bool>("ThumbnailButton") && !Settings.Get<bool>("HideFromAltTab"))
 				{
 					button.Icon = Properties.Resources.play_ico;
 					button.Tooltip = "Play";
 				}
-				if (Settings.Get<bool>(Setting.EnableVisualiser))
-					centerPanel.StopVisualiser(player);
+				centerPanel.StopVisualiser(player);
 				await stopTask;
 			}
 			else
@@ -581,19 +544,18 @@ namespace ListenMoeClient
 				player.Play();
 				ReloadSprites();
 				menuItemPlayPause.Text = "Pause";
-				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
+				if (Settings.Get<bool>("ThumbnailButton") && !Settings.Get<bool>("HideFromAltTab"))
 				{
 					button.Icon = Properties.Resources.pause_ico;
 					button.Tooltip = "Pause";
 				}
-				if (Settings.Get<bool>(Setting.EnableVisualiser))
-					centerPanel.StartVisualiser(player);
+				centerPanel.StartVisualiser(player);
 			}
 		}
 
 		private void picClose_Click(object sender, EventArgs e)
 		{
-			if (Settings.Get<bool>(Setting.CloseToTray))
+			if (Settings.Get<bool>("CloseToTray"))
 			{
 				this.Hide();
 			}
@@ -605,7 +567,15 @@ namespace ListenMoeClient
 
 		void ProcessSongInfo(SongInfo songInfo)
 		{
-			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name, songInfo.anime_name, "Requested by " + songInfo.requested_by, !string.IsNullOrWhiteSpace(songInfo.requested_by));
+			string albumName = songInfo.anime_name;
+			string middle = "";
+			if (!string.IsNullOrEmpty(songInfo.requested_by))
+			{
+				middle = songInfo.requested_by.Contains(" ") ? "" : "Requested by ";
+				if (!string.IsNullOrWhiteSpace(albumName))
+					middle = "; " + middle;
+			}
+			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), albumName + middle + songInfo.requested_by);
 
 			if (songInfo.extended != null)
 				SetFavouriteSprite(songInfo.extended.favorite);
@@ -645,14 +615,13 @@ namespace ListenMoeClient
 
 		private void SetPlayPauseSize(bool bigger)
 		{
-			var scale = Settings.Get<float>(Setting.Scale);
-			var ppSize = Settings.DEFAULT_PLAY_PAUSE_SIZE;
-			int playPauseSize = bigger ? ppSize + 2 : ppSize;
+			var scale = Settings.Get<float>("Scale");
+			int playPauseSize = bigger ? 18 : 16;
+			int picPlayPauseX = bigger ? 15 : 16;
 
 			picPlayPause.Size = new Size((int)(playPauseSize * scale), (int)(playPauseSize * scale));
 			int y = (panelPlayBtn.Height / 2) - (picPlayPause.Height / 2);
-			int x = (panelPlayBtn.Width / 2) - (picPlayPause.Width / 2);
-			picPlayPause.Location = new Point(x, y);
+			picPlayPause.Location = new Point((int)(picPlayPauseX * scale), y);
 		}
 
 		private void menuItemCopySongInfo_Click(object sender, EventArgs e)
@@ -708,10 +677,10 @@ namespace ListenMoeClient
 			SetPlayPauseSize(false);
 		}
 
-		private void centerPanel_Resize(object sender, EventArgs e)
+		private void panelRight_Resize(object sender, EventArgs e)
 		{
-			float scale = Settings.Get<float>(Setting.Scale);
-			picFavourite.Location = new Point((int)(centerPanel.Width - picFavourite.Width), (centerPanel.Height / 2) - (picFavourite.Height / 2));
+			picFavourite.Location = new Point(0, (panelRight.Height / 2) - (picFavourite.Height / 2));
+			picFavourite.SendToBack();
 		}
 
 		private async void SetFavouriteSprite(bool favourited)
@@ -762,20 +731,19 @@ namespace ListenMoeClient
 
 			SetFavouriteSprite(newStatus);
 
-			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>(Setting.Token), new Dictionary<string, string>() {
+			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>("Token"), new Dictionary<string, string>() {
 				["song"] = songInfoStream.currentInfo.song_id.ToString()
 			});
 
 			var response = Json.Parse<FavouritesResponse>(result);
-			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] :
+			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] : 
 				spriteColorInverted ? darkFavSprite.Frames[0] : favSprite.Frames[0];
-			songInfoStream.currentInfo.extended.favorite = response.favorite;
 		}
 
 		private void menuItemResetLocation_Click(object sender, EventArgs e)
 		{
-			Settings.Set(Setting.LocationX, 0);
-			Settings.Set(Setting.LocationY, 0);
+			Settings.Set("LocationX", 0);
+			Settings.Set("LocationY", 0);
 			Settings.WriteSettings();
 			this.Location = new Point(0, 0);
 		}
