@@ -24,6 +24,7 @@ namespace ListenMoeClient
 		HideFromAltTab,
 		ThumbnailButton,
 		HeartFavSprite,
+		FixedSize,
 
 		//Visualiser settings
 		EnableVisualiser,
@@ -168,6 +169,7 @@ namespace ListenMoeClient
 			Set(Setting.VisualiserBars, true);
 			Set(Setting.VisualiserFadeEdges, false);
 			Set(Setting.HeartFavSprite, false);
+			Set(Setting.FixedSize, false);
 
 			Set(Setting.Token, "");
 			Set(Setting.Username, "");

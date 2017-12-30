@@ -27,6 +27,7 @@
 		public string sgCloseToTray { get; protected set; }
 		public string sgThumbnailToolbarButton { get; protected set; }
 		public string sgHideFromAltTab { get; protected set; }
+		public string sgFixedSize { get; protected set; }
 
 		public string suUpdates { get; protected set; }
 		public string suCheckForUpdatesEvery { get; protected set; }
@@ -78,6 +79,7 @@
 			sgCloseToTray = "Close to tray";
 			sgThumbnailToolbarButton = "Thumbnail toolbar button";
 			sgHideFromAltTab = "Hide from Alt-Tab menu\nand taskbar (show tray only)";
+			sgFixedSize = "Disallow resizing";
 
 			suUpdates = "Updates";
 			suCheckForUpdatesEvery = "Check for updates every:";

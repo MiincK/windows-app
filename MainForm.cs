@@ -219,12 +219,12 @@ namespace ListenMoeClient
 			if (heartFavSprite)
 			{
 				picFavourite.Size = new Size(48, 48);
-				picFavourite.Location = new Point(-8, 2);
+				picFavourite.Location = new Point(-8, (panelRight.Height / 2) - 24);
 			}
 			else
 			{
 				picFavourite.Size = new Size(32, 32);
-				picFavourite.Location = new Point(0, 10);
+				picFavourite.Location = new Point(0, (panelRight.Height / 2) - 16);
 			}
 
 			bool favourite = songInfoStream?.currentInfo.extended?.favorite ?? false;
@@ -261,6 +261,12 @@ namespace ListenMoeClient
 
 		private void UpdatePanelExcludedRegions()
 		{
+			if (Settings.Get<bool>(Setting.FixedSize))
+			{
+				gridPanel.Region = new Region();
+				panelRight.Region = new Region();
+				return;
+			}
 			gripRect = new Rectangle(this.ClientRectangle.Width - gripSize, this.ClientRectangle.Height - gripSize, gripSize, gripSize);
 			rightEdgeRect = new Rectangle(this.ClientRectangle.Width - 2, 0, 2, this.ClientRectangle.Height);
 			leftEdgeRect = new Rectangle(0, 0, 2, this.ClientRectangle.Height);
@@ -355,6 +361,7 @@ namespace ListenMoeClient
 				SetWindowLong(this.Handle, GWL_EXSTYLE, windowStyle & ~WS_EX_TOOLWINDOW);
 			}
 
+			UpdatePanelExcludedRegions();
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			RawInput.RegisterCallback(VirtualKeys.MediaPlayPause, async () => await TogglePlayback());
 			this.Invalidate();

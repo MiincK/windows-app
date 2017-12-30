@@ -28,6 +28,7 @@
 			sgCloseToTray = "Сворачивать в трей";
 			sgThumbnailToolbarButton = "Управление в панели задач";
 			sgHideFromAltTab = "Скрывать в меню Alt-Tab и\nпанели задач (Показывать\nтолько в трее)";
+			sgFixedSize = "Постоянный размер окна";
 
 			suUpdates = "Обновление";
 			suCheckForUpdatesEvery = "Проверять обновления каждые:";

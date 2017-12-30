@@ -36,6 +36,7 @@
 			this.numericUpdateInterval = new System.Windows.Forms.NumericUpDown();
 			this.lblMinutes = new System.Windows.Forms.Label();
 			this.gbGeneral = new System.Windows.Forms.GroupBox();
+			this.cbFixedSize = new System.Windows.Forms.CheckBox();
 			this.cbTopmost = new System.Windows.Forms.CheckBox();
 			this.cbCloseToTray = new System.Windows.Forms.CheckBox();
 			this.cbThumbnailButton = new System.Windows.Forms.CheckBox();
@@ -44,7 +45,6 @@
 			this.lblAudioDevice = new System.Windows.Forms.Label();
 			this.dropdownAudioDevices = new System.Windows.Forms.ComboBox();
 			this.tpTheme = new System.Windows.Forms.TabPage();
-			///this.gbVisualiserTheme = new System.Windows.Forms.GroupBox();
 			this.panelVisualiserColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblVisualiserOpacity = new System.Windows.Forms.Label();
 			this.lblVisualiserOpacityDesc = new System.Windows.Forms.Label();
@@ -55,7 +55,6 @@
 			this.cbVisualiserBars = new System.Windows.Forms.CheckBox();
 			this.cbEnableVisualiser = new System.Windows.Forms.CheckBox();
 			this.cbHeartFavSprite = new System.Windows.Forms.CheckBox();
-			///this.gbColors = new System.Windows.Forms.GroupBox();
 			this.lblAccentColor = new System.Windows.Forms.Label();
 			this.panelAccentColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblBaseColor = new System.Windows.Forms.Label();
@@ -80,10 +79,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateInterval)).BeginInit();
 			this.gbGeneral.SuspendLayout();
 			this.tpTheme.SuspendLayout();
-			///this.gbVisualiserTheme.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbVisualiserOpacity)).BeginInit();
 			this.gbVisualiserSettings.SuspendLayout();
-			///this.gbColors.SuspendLayout();
 			this.gbLayout.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).BeginInit();
@@ -179,6 +176,7 @@
 			this.gbGeneral.Controls.Add(this.cbCloseToTray);
 			this.gbGeneral.Controls.Add(this.cbThumbnailButton);
 			this.gbGeneral.Controls.Add(this.cbHideFromAltTab);
+			this.gbGeneral.Controls.Add(this.cbFixedSize);
 			this.gbGeneral.Location = new System.Drawing.Point(12, 34);
 			this.gbGeneral.Name = "gbGeneral";
 			this.gbGeneral.Size = new System.Drawing.Size(333, 85);
@@ -195,6 +193,16 @@
 			this.cbTopmost.TabIndex = 0;
 			this.cbTopmost.Text = Localisation.Current.sgKeepTopMost;
 			this.cbTopmost.UseVisualStyleBackColor = true;
+			//
+			// cbFixedSize
+			//
+			this.cbFixedSize.AutoSize = true;
+			this.cbFixedSize.Location = new System.Drawing.Point(6, 61);
+			this.cbFixedSize.Name = "cbTopmost";
+			this.cbFixedSize.Size = new System.Drawing.Size(117, 17);
+			this.cbFixedSize.TabIndex = 0;
+			this.cbFixedSize.Text = Localisation.Current.sgFixedSize;
+			this.cbFixedSize.UseVisualStyleBackColor = true;
 			//
 			// cbCloseToTray
 			//
@@ -588,13 +596,9 @@
 			this.gbGeneral.ResumeLayout(false);
 			this.gbGeneral.PerformLayout();
 			this.tpTheme.ResumeLayout(false);
-			///this.gbVisualiserTheme.ResumeLayout(false);
-			///this.gbVisualiserTheme.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbVisualiserOpacity)).EndInit();
 			this.gbVisualiserSettings.ResumeLayout(false);
 			this.gbVisualiserSettings.PerformLayout();
-			///this.gbColors.ResumeLayout(false);
-			///this.gbColors.PerformLayout();
 			this.gbLayout.ResumeLayout(false);
 			this.gbLayout.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).EndInit();
@@ -618,6 +622,7 @@
 		private System.Windows.Forms.CheckBox cbUpdateAutocheck;
 		private System.Windows.Forms.CheckBox cbCloseToTray;
 		private System.Windows.Forms.CheckBox cbHideFromAltTab;
+		private System.Windows.Forms.CheckBox cbFixedSize;
 		private GhostTextbox txtUsername;
 		private GhostTextbox txtPassword;
 		private System.Windows.Forms.Panel panelNotLoggedIn;
@@ -634,7 +639,6 @@
 		private System.Windows.Forms.TrackBar tbOpacity;
 		private System.Windows.Forms.Label lblResolutionScaleDesc;
 		private System.Windows.Forms.TrackBar tbResolutionScale;
-		///private System.Windows.Forms.GroupBox gbColors;
 		private System.Windows.Forms.Label lblAccentColor;
 		private Controls.BorderedPanel panelAccentColor;
 		private System.Windows.Forms.Label lblBaseColor;
@@ -655,6 +659,5 @@
 		private System.Windows.Forms.Label lblVisualiserColor;
 		private System.Windows.Forms.Label lblVisualiserOpacity;
 		private System.Windows.Forms.GroupBox gbUpdate;
-		///private System.Windows.Forms.GroupBox gbVisualiserTheme;
 	}
 }

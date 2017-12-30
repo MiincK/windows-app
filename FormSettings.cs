@@ -27,6 +27,7 @@ namespace ListenMoeClient
 			LoadAndBindCheckboxSetting(cbUpdateAutocheck, "UpdateAutocheck");
 			LoadAndBindCheckboxSetting(cbThumbnailButton, "ThumbnailButton");
 			LoadAndBindCheckboxSetting(cbTopmost, "TopMost");
+			LoadAndBindCheckboxSetting(cbFixedSize, "FixedSize");
 			LoadAndBindCheckboxSetting(cbVisualiserBars, "VisualiserBars");
 			LoadAndBindCheckboxSetting(cbVisualiserFadeEdges, "VisualiserFadeEdges");
 
