@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -25,6 +26,7 @@ namespace ListenMoeClient
 		{
 			if (mutex.WaitOne(TimeSpan.Zero, true))
 			{
+				Localisation.SetLanguage(CultureInfo.InstalledUICulture.TwoLetterISOLanguageName);
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 				Environment.SetEnvironmentVariable("LANG", "ja_JP.utf-8");
 				Application.EnableVisualStyles();

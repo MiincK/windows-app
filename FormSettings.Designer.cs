@@ -97,7 +97,7 @@
 			this.btnLogin.Name = "btnLogin";
 			this.btnLogin.Size = new System.Drawing.Size(75, 23);
 			this.btnLogin.TabIndex = 0;
-			this.btnLogin.Text = "Login";
+			this.btnLogin.Text = Localisation.Current.saLogin;
 			this.btnLogin.UseVisualStyleBackColor = true;
 			this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
 			//
@@ -125,7 +125,7 @@
 			this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
 			this.tpGeneral.Size = new System.Drawing.Size(355, 221);
 			this.tpGeneral.TabIndex = 2;
-			this.tpGeneral.Text = "General";
+			this.tpGeneral.Text = Localisation.Current.sGeneral;
 			this.tpGeneral.UseVisualStyleBackColor = true;
 			//
 			// groupBox5
@@ -138,7 +138,7 @@
 			this.groupBox5.Size = new System.Drawing.Size(333, 88);
 			this.groupBox5.TabIndex = 14;
 			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "Updates";
+			this.groupBox5.Text = Localisation.Current.suUpdates;
 			//
 			// cbUpdateAutocheck
 			//
@@ -147,7 +147,7 @@
 			this.cbUpdateAutocheck.Name = "cbUpdateAutocheck";
 			this.cbUpdateAutocheck.Size = new System.Drawing.Size(145, 17);
 			this.cbUpdateAutocheck.TabIndex = 1;
-			this.cbUpdateAutocheck.Text = "Check for updates every:";
+			this.cbUpdateAutocheck.Text = Localisation.Current.suCheckForUpdatesEvery;
 			this.cbUpdateAutocheck.UseVisualStyleBackColor = true;
 			//
 			// numericUpdateInterval
@@ -170,7 +170,7 @@
 			this.lblMinutes.Name = "lblMinutes";
 			this.lblMinutes.Size = new System.Drawing.Size(28, 13);
 			this.lblMinutes.TabIndex = 8;
-			this.lblMinutes.Text = "mins";
+			this.lblMinutes.Text = Localisation.Current.suMins;
 			//
 			// groupBox3
 			//
@@ -183,7 +183,7 @@
 			this.groupBox3.Size = new System.Drawing.Size(333, 85);
 			this.groupBox3.TabIndex = 13;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "General";
+			this.groupBox3.Text = Localisation.Current.sGeneral;
 			//
 			// cbTopmost
 			//
@@ -192,7 +192,7 @@
 			this.cbTopmost.Name = "cbTopmost";
 			this.cbTopmost.Size = new System.Drawing.Size(117, 17);
 			this.cbTopmost.TabIndex = 0;
-			this.cbTopmost.Text = "Keep form top most";
+			this.cbTopmost.Text = Localisation.Current.sgKeepTopMost;
 			this.cbTopmost.UseVisualStyleBackColor = true;
 			//
 			// cbCloseToTray
@@ -202,7 +202,7 @@
 			this.cbCloseToTray.Name = "cbCloseToTray";
 			this.cbCloseToTray.Size = new System.Drawing.Size(84, 17);
 			this.cbCloseToTray.TabIndex = 2;
-			this.cbCloseToTray.Text = "Close to tray";
+			this.cbCloseToTray.Text = Localisation.Current.sgCloseToTray;
 			this.cbCloseToTray.UseVisualStyleBackColor = true;
 			//
 			// cbThumbnailButton
@@ -214,17 +214,17 @@
 			this.cbThumbnailButton.Name = "cbThumbnailButton";
 			this.cbThumbnailButton.Size = new System.Drawing.Size(143, 30);
 			this.cbThumbnailButton.TabIndex = 9;
-			this.cbThumbnailButton.Text = "Thumbnail toolbar button\r\n(requires restart)";
+			this.cbThumbnailButton.Text = Localisation.Current.sgThumbnailToolbarButton + "\n" + Localisation.Current.sRequiesRestart;
 			this.cbThumbnailButton.UseVisualStyleBackColor = true;
 			//
 			// cbHideFromAltTab
 			//
 			this.cbHideFromAltTab.AutoSize = true;
-			this.cbHideFromAltTab.Location = new System.Drawing.Point(174, 48);
+			this.cbHideFromAltTab.Location = new System.Drawing.Point(174, 40);
 			this.cbHideFromAltTab.Name = "cbHideFromAltTab";
 			this.cbHideFromAltTab.Size = new System.Drawing.Size(158, 30);
 			this.cbHideFromAltTab.TabIndex = 3;
-			this.cbHideFromAltTab.Text = "Hide from Alt-Tab menu\r\nand taskbar (show tray only)";
+			this.cbHideFromAltTab.Text = Localisation.Current.sgHideFromAltTab;
 			this.cbHideFromAltTab.UseVisualStyleBackColor = true;
 			//
 			// btnRefreshAudioDevices
@@ -233,7 +233,7 @@
 			this.btnRefreshAudioDevices.Name = "btnRefreshAudioDevices";
 			this.btnRefreshAudioDevices.Size = new System.Drawing.Size(75, 23);
 			this.btnRefreshAudioDevices.TabIndex = 12;
-			this.btnRefreshAudioDevices.Text = "Refresh";
+			this.btnRefreshAudioDevices.Text = Localisation.Current.sgRefresh;
 			this.btnRefreshAudioDevices.UseVisualStyleBackColor = true;
 			this.btnRefreshAudioDevices.Click += new System.EventHandler(this.btnRefreshAudioDevices_Click);
 			//
@@ -244,7 +244,7 @@
 			this.lblAudioDevice.Name = "lblAudioDevice";
 			this.lblAudioDevice.Size = new System.Drawing.Size(72, 13);
 			this.lblAudioDevice.TabIndex = 11;
-			this.lblAudioDevice.Text = "Audio device:";
+			this.lblAudioDevice.Text = Localisation.Current.sgAudioDevice;
 			//
 			// dropdownAudioDevices
 			//
@@ -267,7 +267,7 @@
 			this.tpTheme.Padding = new System.Windows.Forms.Padding(3);
 			this.tpTheme.Size = new System.Drawing.Size(355, 221);
 			this.tpTheme.TabIndex = 4;
-			this.tpTheme.Text = "Theme & Layout";
+			this.tpTheme.Text = Localisation.Current.sThemeLayout;
 			this.tpTheme.UseVisualStyleBackColor = true;
 			//
 			// groupBox6
@@ -282,7 +282,7 @@
 			this.groupBox6.Size = new System.Drawing.Size(159, 129);
 			this.groupBox6.TabIndex = 27;
 			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "Visualiser theme";
+			this.groupBox6.Text = Localisation.Current.svVisualiserTheme;
 			//
 			// panelVisualiserColor
 			//
@@ -311,7 +311,7 @@
 			this.lblVisualiserOpacityDesc.Name = "lblVisualiserOpacityDesc";
 			this.lblVisualiserOpacityDesc.Size = new System.Drawing.Size(43, 13);
 			this.lblVisualiserOpacityDesc.TabIndex = 24;
-			this.lblVisualiserOpacityDesc.Text = "Opacity";
+			this.lblVisualiserOpacityDesc.Text = Localisation.Current.svVisualiserOpacity;
 			//
 			// tbVisualiserOpacity
 			//
@@ -333,7 +333,7 @@
 			this.lblVisualiserColor.Name = "lblVisualiserColor";
 			this.lblVisualiserColor.Size = new System.Drawing.Size(77, 13);
 			this.lblVisualiserColor.TabIndex = 26;
-			this.lblVisualiserColor.Text = "Visualiser color";
+			this.lblVisualiserColor.Text = Localisation.Current.svVisualiserColor;
 			//
 			// groupBox4
 			//
@@ -345,7 +345,7 @@
 			this.groupBox4.Size = new System.Drawing.Size(170, 93);
 			this.groupBox4.TabIndex = 26;
 			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Visualiser";
+			this.groupBox4.Text = Localisation.Current.svVisualiser;
 			//
 			// cbVisualiserFadeEdges
 			//
@@ -354,7 +354,7 @@
 			this.cbVisualiserFadeEdges.Name = "cbVisualiserFadeEdges";
 			this.cbVisualiserFadeEdges.Size = new System.Drawing.Size(82, 17);
 			this.cbVisualiserFadeEdges.TabIndex = 25;
-			this.cbVisualiserFadeEdges.Text = "Fade edges";
+			this.cbVisualiserFadeEdges.Text = Localisation.Current.svFadeEdges;
 			this.cbVisualiserFadeEdges.UseVisualStyleBackColor = true;
 			//
 			// cbVisualiserBars
@@ -364,7 +364,7 @@
 			this.cbVisualiserBars.Name = "cbVisualiserBars";
 			this.cbVisualiserBars.Size = new System.Drawing.Size(68, 17);
 			this.cbVisualiserBars.TabIndex = 22;
-			this.cbVisualiserBars.Text = "Use bars";
+			this.cbVisualiserBars.Text = Localisation.Current.svUseBars;
 			this.cbVisualiserBars.UseVisualStyleBackColor = true;
 			//
 			// cbEnableVisualiser
@@ -374,7 +374,7 @@
 			this.cbEnableVisualiser.Name = "cbEnableVisualiser";
 			this.cbEnableVisualiser.Size = new System.Drawing.Size(59, 17);
 			this.cbEnableVisualiser.TabIndex = 20;
-			this.cbEnableVisualiser.Text = "Enable";
+			this.cbEnableVisualiser.Text = Localisation.Current.svEnable;
 			this.cbEnableVisualiser.UseVisualStyleBackColor = true;
 			//
 			// groupBox2
@@ -388,7 +388,7 @@
 			this.groupBox2.Size = new System.Drawing.Size(159, 74);
 			this.groupBox2.TabIndex = 18;
 			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Colors";
+			this.groupBox2.Text = Localisation.Current.scColors;
 			//
 			// lblAccentColor
 			//
@@ -397,7 +397,7 @@
 			this.lblAccentColor.Name = "lblAccentColor";
 			this.lblAccentColor.Size = new System.Drawing.Size(67, 13);
 			this.lblAccentColor.TabIndex = 5;
-			this.lblAccentColor.Text = "Accent color";
+			this.lblAccentColor.Text = Localisation.Current.scAccentColor;
 			//
 			// panelAccentColor
 			//
@@ -417,7 +417,7 @@
 			this.lblBaseColor.Name = "lblBaseColor";
 			this.lblBaseColor.Size = new System.Drawing.Size(57, 13);
 			this.lblBaseColor.TabIndex = 3;
-			this.lblBaseColor.Text = "Base color";
+			this.lblBaseColor.Text = Localisation.Current.scBaseColor;
 			//
 			// panelBaseColor
 			//
@@ -443,7 +443,7 @@
 			this.groupBox1.Size = new System.Drawing.Size(170, 113);
 			this.groupBox1.TabIndex = 19;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Layout";
+			this.groupBox1.Text = Localisation.Current.stLayout;
 			//
 			// lblResolutionScaleDesc
 			//
@@ -452,7 +452,7 @@
 			this.lblResolutionScaleDesc.Name = "lblResolutionScaleDesc";
 			this.lblResolutionScaleDesc.Size = new System.Drawing.Size(85, 13);
 			this.lblResolutionScaleDesc.TabIndex = 13;
-			this.lblResolutionScaleDesc.Text = "Resolution scale";
+			this.lblResolutionScaleDesc.Text = Localisation.Current.stResolutionScale;
 			//
 			// tbResolutionScale
 			//
@@ -496,7 +496,7 @@
 			this.lblOpacityDesc.Name = "lblOpacityDesc";
 			this.lblOpacityDesc.Size = new System.Drawing.Size(43, 13);
 			this.lblOpacityDesc.TabIndex = 16;
-			this.lblOpacityDesc.Text = "Opacity";
+			this.lblOpacityDesc.Text = Localisation.Current.stOpacity;
 			//
 			// lblOpacity
 			//
@@ -516,7 +516,7 @@
 			this.tpAccount.Padding = new System.Windows.Forms.Padding(3);
 			this.tpAccount.Size = new System.Drawing.Size(355, 221);
 			this.tpAccount.TabIndex = 0;
-			this.tpAccount.Text = "Account";
+			this.tpAccount.Text = Localisation.Current.sAccount;
 			this.tpAccount.UseVisualStyleBackColor = true;
 			//
 			// panelNotLoggedIn
@@ -532,7 +532,7 @@
 			//
 			// txtUsername
 			//
-			this.txtUsername.GhostText = "Username";
+			this.txtUsername.GhostText = Localisation.Current.saUsername;
 			this.txtUsername.Location = new System.Drawing.Point(94, 15);
 			this.txtUsername.Name = "txtUsername";
 			this.txtUsername.Size = new System.Drawing.Size(181, 20);
@@ -540,7 +540,7 @@
 			//
 			// txtPassword
 			//
-			this.txtPassword.GhostText = "Password";
+			this.txtPassword.GhostText = Localisation.Current.saPassword;
 			this.txtPassword.Location = new System.Drawing.Point(94, 41);
 			this.txtPassword.Name = "txtPassword";
 			this.txtPassword.PasswordChar = '⚫';
@@ -565,7 +565,7 @@
 			this.lblLoginStatus.Name = "lblLoginStatus";
 			this.lblLoginStatus.Size = new System.Drawing.Size(68, 13);
 			this.lblLoginStatus.TabIndex = 1;
-			this.lblLoginStatus.Text = "Logged in as";
+			this.lblLoginStatus.Text = Localisation.Current.saLoggedInAs;
 			//
 			// btnLogout
 			//
@@ -573,7 +573,7 @@
 			this.btnLogout.Name = "btnLogout";
 			this.btnLogout.Size = new System.Drawing.Size(75, 23);
 			this.btnLogout.TabIndex = 0;
-			this.btnLogout.Text = "Logout";
+			this.btnLogout.Text = Localisation.Current.saLogout;
 			this.btnLogout.UseVisualStyleBackColor = true;
 			this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
 			//
@@ -585,7 +585,7 @@
 			this.Controls.Add(this.tabControl);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormSettings";
-			this.Text = "Settings";
+			this.Text = Localisation.Current.sSettings;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormSettings_FormClosing);
 			this.tabControl.ResumeLayout(false);
 			this.tpGeneral.ResumeLayout(false);

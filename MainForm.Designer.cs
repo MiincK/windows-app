@@ -63,7 +63,7 @@
 			// menuItemCopySongInfo
 			// 
 			this.menuItemCopySongInfo.Index = 0;
-			this.menuItemCopySongInfo.Text = "Copy song info";
+			this.menuItemCopySongInfo.Text = Localisation.Current.rCopySongInfo;
 			this.menuItemCopySongInfo.Click += new System.EventHandler(this.menuItemCopySongInfo_Click);
 			// 
 			// notifyIcon1
@@ -83,25 +83,25 @@
 			// menuItemPlayPause
 			// 
 			this.menuItemPlayPause.Index = 0;
-			this.menuItemPlayPause.Text = "Pause";
+			this.menuItemPlayPause.Text = Localisation.Current.tPause;
 			this.menuItemPlayPause.Click += new System.EventHandler(this.playPause_Click);
 			// 
 			// menuItemShow
 			// 
 			this.menuItemShow.Index = 1;
-			this.menuItemShow.Text = "Show";
+			this.menuItemShow.Text = Localisation.Current.tShow;
 			this.menuItemShow.Click += new System.EventHandler(this.menuItemShow_Click);
 			// 
 			// menuItemResetLocation
 			// 
 			this.menuItemResetLocation.Index = 2;
-			this.menuItemResetLocation.Text = "Reset location";
+			this.menuItemResetLocation.Text = Localisation.Current.tResetLocation;
 			this.menuItemResetLocation.Click += new System.EventHandler(this.menuItemResetLocation_Click);
 			// 
 			// menuItemExit
 			// 
 			this.menuItemExit.Index = 3;
-			this.menuItemExit.Text = "Exit";
+			this.menuItemExit.Text = Localisation.Current.tExit;
 			this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
 			// 
 			// gridPanel

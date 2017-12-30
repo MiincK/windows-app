@@ -176,7 +176,7 @@ namespace ListenMoeClient
 
 			if (Settings.Get<bool>(Setting.ThumbnailButton))
 			{
-				button = new ThumbnailToolBarButton(Properties.Resources.pause_ico, "Pause");
+				button = new ThumbnailToolBarButton(Properties.Resources.pause_ico, Localisation.Current.tPause);
 				button.Click += async (_, __) => await TogglePlayback();
 				TaskbarManager.Instance.ThumbnailToolBars.AddButtons(this.Handle, button);
 			}
@@ -417,8 +417,8 @@ namespace ListenMoeClient
 			if (await Updater.CheckGithubVersion())
 			{
 				System.Media.SystemSounds.Beep.Play(); //DING
-				DialogResult result = await factory.StartNew(() => MessageBox.Show(this, "An update is available for the Listen.moe player. Do you want to update and restart the application now?",
-					"Listen.moe client - Update available - current version " + Globals.VERSION, MessageBoxButtons.YesNo));
+				DialogResult result = await factory.StartNew(() => MessageBox.Show(this, Localisation.Current.mUpdateAvailable,
+					String.Format(Localisation.Current.mUpdateDialogCaption, Globals.VERSION), MessageBoxButtons.YesNo));
 				if (result == DialogResult.Yes)
 				{
 					centerPanel.SetUpdateState(UpdateState.InProgress);
@@ -551,11 +551,11 @@ namespace ListenMoeClient
 			{
 				Task stopTask = player.Stop();
 				ReloadSprites();
-				menuItemPlayPause.Text = "Play";
+				menuItemPlayPause.Text = Localisation.Current.tPlay;
 				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
 				{
 					button.Icon = Properties.Resources.play_ico;
-					button.Tooltip = "Play";
+					button.Tooltip = Localisation.Current.tPlay;
 				}
 				centerPanel.StopVisualiser(player);
 				await stopTask;
@@ -564,11 +564,11 @@ namespace ListenMoeClient
 			{
 				player.Play();
 				ReloadSprites();
-				menuItemPlayPause.Text = "Pause";
+				menuItemPlayPause.Text = Localisation.Current.tPause;
 				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
 				{
 					button.Icon = Properties.Resources.pause_ico;
-					button.Tooltip = "Pause";
+					button.Tooltip = Localisation.Current.tPause;
 				}
 				centerPanel.StartVisualiser(player);
 			}
@@ -592,11 +592,11 @@ namespace ListenMoeClient
 			string middle = "";
 			if (!string.IsNullOrEmpty(songInfo.requested_by))
 			{
-				middle = songInfo.requested_by.Contains(" ") ? "" : "Requested by ";
+				middle = songInfo.requested_by.Contains(" ") ? "" : String.Format(Localisation.Current.mReqestedBy, songInfo.requested_by);
 				if (!string.IsNullOrWhiteSpace(albumName))
-					middle = "; " + middle;
+					middle = albumName + "; " + middle;
 			}
-			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), albumName + middle + songInfo.requested_by);
+			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), middle);
 
 			if (songInfo.extended != null)
 				SetFavouriteSprite(songInfo.extended.favorite);

@@ -50,12 +50,12 @@ namespace ListenMoeClient
 
 			panelNotLoggedIn.Visible = !User.LoggedIn;
 			panelLoggedIn.Visible = User.LoggedIn;
-			lblLoginStatus.Text = "Logged in as " + Settings.Get<string>(Setting.Username);
+			lblLoginStatus.Text = String.Format(Localisation.Current.saLoggedInAs, Settings.Get<string>(Setting.Username));
 			lblLoginStatus.Location = new Point((this.Width / 2) - (lblLoginStatus.Width / 2), lblLoginStatus.Location.Y);
 
 			User.OnLoginComplete += () =>
 			{
-				lblLoginStatus.Text = "Logged in as " + Settings.Get<string>(Setting.Username);
+				lblLoginStatus.Text = String.Format(Localisation.Current.saLoggedInAs, Settings.Get<string>(Setting.Username));
 				lblLoginStatus.Location = new Point((this.Width / 2) - (lblLoginStatus.Width / 2), lblLoginStatus.Location.Y);
 				txtUsername.Clear();
 				txtPassword.Clear();

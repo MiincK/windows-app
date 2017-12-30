@@ -141,6 +141,10 @@
     <Compile Include="Controls\BorderedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Localisation\Russian.cs" />
+    <Compile Include="Localisation\English.cs" />
+    <Compile Include="Localisation\LanguageBase.cs" />
+    <Compile Include="Localisation\Localisation.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
