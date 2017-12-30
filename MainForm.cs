@@ -173,8 +173,8 @@ namespace ListenMoeClient
 
 			trayIcon.ContextMenu = contextMenu2;
 			trayIcon.Icon = Properties.Resources.icon;
-
-			LoadFavSprite(heartFavSprite);
+			
+			LoadFavSprite();
 
 			if (Settings.Get<bool>(Setting.ThumbnailButton))
 			{
@@ -204,12 +204,13 @@ namespace ListenMoeClient
 			this.SizeChanged += MainForm_SizeChanged;
 			UpdatePanelExcludedRegions();
 		}
-		private async void LoadFavSprite(bool heart)
+		private async void LoadFavSprite()
 		{
+			heartFavSprite = Settings.Get<bool>(Setting.HeartFavSprite);
 			await Task.Run(() =>
 			{
-				Bitmap spritesheet = heart ? Properties.Resources.heart_sprite : Properties.Resources.fav_sprite;
-				int frameSize = heart ? 400 : 256;
+				Bitmap spritesheet = heartFavSprite ? Properties.Resources.heart_sprite : Properties.Resources.fav_sprite;
+				int frameSize = heartFavSprite ? 400 : 256;
 				lightFavSprite = SpriteLoader.LoadFavSprite(spritesheet, frameSize);
 				fadedFavSprite = SpriteLoader.LoadFadedFavSprite(spritesheet, frameSize);
 				darkFavSprite = SpriteLoader.LoadDarkFavSprite(spritesheet, frameSize);
@@ -217,7 +218,7 @@ namespace ListenMoeClient
 			});
 
 			picFavourite.ResetScale();
-			if (heart)
+			if (heartFavSprite)
 			{
 				picFavourite.Size = new Size(48, 48);
 				picFavourite.Location = new Point(-8, 2);
@@ -319,6 +320,8 @@ namespace ListenMoeClient
 			this.Location = new Point(Settings.Get<int>(Setting.LocationX), Settings.Get<int>(Setting.LocationY));
 			this.Size = new Size(Settings.Get<int>(Setting.SizeX), Settings.Get<int>(Setting.SizeY));
 
+			LoadFavSprite();
+
 			if (Settings.Get<bool>(Setting.EnableVisualiser))
 				centerPanel.StartVisualiser(player);
 			else
@@ -356,14 +359,6 @@ namespace ListenMoeClient
 
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			RawInput.RegisterCallback(VirtualKeys.MediaPlayPause, async () => await TogglePlayback());
-			RawInput.RegisterPassword(new[] {
-				VirtualKeys.Up, VirtualKeys.Up,
-				VirtualKeys.Down, VirtualKeys.Down,
-				VirtualKeys.Left, VirtualKeys.Right,
-				VirtualKeys.Left, VirtualKeys.Right,
-				VirtualKeys.B, VirtualKeys.A,
-				VirtualKeys.Return
-			}, () => LoadFavSprite(heartFavSprite = !heartFavSprite));
 			this.Invalidate();
 		}
 

@@ -35,19 +35,16 @@
 		public string stLayout { get; protected set; }
 		public string stResolutionScale { get; protected set; }
 		public string stOpacity { get; protected set; }
+		public string stBaseColor { get; protected set; }
+		public string stAccentColor { get; protected set; }
+		public string stHeartFav { get; protected set; }
 
 		public string svVisualiser { get; protected set; }
 		public string svEnable { get; protected set; }
 		public string svUseBars { get; protected set; }
 		public string svFadeEdges { get; protected set; }
-
-		public string svVisualiserTheme { get; protected set; }
 		public string svVisualiserColor { get; protected set; }
 		public string svVisualiserOpacity { get; protected set; }
-
-		public string scColors { get; protected set; }
-		public string scBaseColor { get; protected set; }
-		public string scAccentColor { get; protected set; }
 
 		public string saUsername { get; protected set; }
 		public string saPassword { get; protected set; }
@@ -89,19 +86,16 @@
 			stLayout = "Layout";
 			stResolutionScale = "Resolution scale";
 			stOpacity = "Opacity";
+			stBaseColor = "Base color";
+			stAccentColor = "Accent color";
+			stHeartFav = "Use heart icon\nfor favourite";
 
 			svVisualiser = "Visualiser";
 			svEnable = "Enable";
 			svUseBars = "Use bars";
 			svFadeEdges = "Fade edges";
-
-			svVisualiserTheme = "Visualiser theme";
-			svVisualiserColor = "Visualiser color";
+			svVisualiserColor = "Color";
 			svVisualiserOpacity = "Opacity";
-
-			scColors = "Colors";
-			scBaseColor = "Base color";
-			scAccentColor = "Accent color";
 
 			saUsername = "Username";
 			saPassword = "Password";

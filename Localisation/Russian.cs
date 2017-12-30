@@ -26,7 +26,7 @@
 			sgRefresh = "Обновить";
 			sgKeepTopMost = "Поверх всех окон";
 			sgCloseToTray = "Сворачивать в трей";
-			sgThumbnailToolbarButton = "Thumbnail toolbar button";
+			sgThumbnailToolbarButton = "Управление в панели задач";
 			sgHideFromAltTab = "Скрывать в меню Alt-Tab и\nпанели задач (Показывать\nтолько в трее)";
 
 			suUpdates = "Обновление";
@@ -36,19 +36,16 @@
 			stLayout = "Внешний вид";
 			stResolutionScale = "Масштаб";
 			stOpacity = "Прозрачность";
+			stBaseColor = "Основной цвет";
+			stAccentColor = "Доп. цвет";
+			stHeartFav = "Использовать сердце\nдля избранного";
 
 			svVisualiser = "Визуализатор";
 			svEnable = "Включить";
 			svUseBars = "Использовать полосы";
 			svFadeEdges = "Сглаживать края";
-
-			svVisualiserTheme = "Вид визуализатора";
 			svVisualiserColor = "Цвет";
 			svVisualiserOpacity = "Прозрачность";
-
-			scColors = "Цвета";
-			scBaseColor = "Основной цвет";
-			scAccentColor = "Доп. цвет";
 
 			saUsername = "Имя пользователя";
 			saPassword = "Пароль";

@@ -21,6 +21,7 @@ namespace ListenMoeClient
 			this.audioPlayer = audioPlayer;
 
 			LoadAndBindCheckboxSetting(cbCloseToTray, "CloseToTray");
+			LoadAndBindCheckboxSetting(cbHeartFavSprite, "HeartFavSprite");
 			LoadAndBindCheckboxSetting(cbEnableVisualiser, "EnableVisualiser");
 			LoadAndBindCheckboxSetting(cbHideFromAltTab, "HideFromAltTab");
 			LoadAndBindCheckboxSetting(cbUpdateAutocheck, "UpdateAutocheck");

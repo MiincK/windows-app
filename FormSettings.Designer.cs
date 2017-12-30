@@ -31,11 +31,11 @@
 			this.btnLogin = new System.Windows.Forms.Button();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tpGeneral = new System.Windows.Forms.TabPage();
-			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.gbUpdate = new System.Windows.Forms.GroupBox();
 			this.cbUpdateAutocheck = new System.Windows.Forms.CheckBox();
 			this.numericUpdateInterval = new System.Windows.Forms.NumericUpDown();
 			this.lblMinutes = new System.Windows.Forms.Label();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.gbGeneral = new System.Windows.Forms.GroupBox();
 			this.cbTopmost = new System.Windows.Forms.CheckBox();
 			this.cbCloseToTray = new System.Windows.Forms.CheckBox();
 			this.cbThumbnailButton = new System.Windows.Forms.CheckBox();
@@ -44,22 +44,23 @@
 			this.lblAudioDevice = new System.Windows.Forms.Label();
 			this.dropdownAudioDevices = new System.Windows.Forms.ComboBox();
 			this.tpTheme = new System.Windows.Forms.TabPage();
-			this.groupBox6 = new System.Windows.Forms.GroupBox();
+			///this.gbVisualiserTheme = new System.Windows.Forms.GroupBox();
 			this.panelVisualiserColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblVisualiserOpacity = new System.Windows.Forms.Label();
 			this.lblVisualiserOpacityDesc = new System.Windows.Forms.Label();
 			this.tbVisualiserOpacity = new System.Windows.Forms.TrackBar();
 			this.lblVisualiserColor = new System.Windows.Forms.Label();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.gbVisualiserSettings = new System.Windows.Forms.GroupBox();
 			this.cbVisualiserFadeEdges = new System.Windows.Forms.CheckBox();
 			this.cbVisualiserBars = new System.Windows.Forms.CheckBox();
 			this.cbEnableVisualiser = new System.Windows.Forms.CheckBox();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.cbHeartFavSprite = new System.Windows.Forms.CheckBox();
+			///this.gbColors = new System.Windows.Forms.GroupBox();
 			this.lblAccentColor = new System.Windows.Forms.Label();
 			this.panelAccentColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblBaseColor = new System.Windows.Forms.Label();
 			this.panelBaseColor = new ListenMoeClient.Controls.BorderedPanel();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.gbLayout = new System.Windows.Forms.GroupBox();
 			this.lblResolutionScaleDesc = new System.Windows.Forms.Label();
 			this.tbResolutionScale = new System.Windows.Forms.TrackBar();
 			this.lblResolutionScale = new System.Windows.Forms.Label();
@@ -75,15 +76,15 @@
 			this.btnLogout = new System.Windows.Forms.Button();
 			this.tabControl.SuspendLayout();
 			this.tpGeneral.SuspendLayout();
-			this.groupBox5.SuspendLayout();
+			this.gbUpdate.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateInterval)).BeginInit();
-			this.groupBox3.SuspendLayout();
+			this.gbGeneral.SuspendLayout();
 			this.tpTheme.SuspendLayout();
-			this.groupBox6.SuspendLayout();
+			///this.gbVisualiserTheme.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbVisualiserOpacity)).BeginInit();
-			this.groupBox4.SuspendLayout();
-			this.groupBox2.SuspendLayout();
-			this.groupBox1.SuspendLayout();
+			this.gbVisualiserSettings.SuspendLayout();
+			///this.gbColors.SuspendLayout();
+			this.gbLayout.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).BeginInit();
 			this.tpAccount.SuspendLayout();
@@ -115,8 +116,8 @@
 			//
 			// tpGeneral
 			//
-			this.tpGeneral.Controls.Add(this.groupBox5);
-			this.tpGeneral.Controls.Add(this.groupBox3);
+			this.tpGeneral.Controls.Add(this.gbUpdate);
+			this.tpGeneral.Controls.Add(this.gbGeneral);
 			this.tpGeneral.Controls.Add(this.btnRefreshAudioDevices);
 			this.tpGeneral.Controls.Add(this.lblAudioDevice);
 			this.tpGeneral.Controls.Add(this.dropdownAudioDevices);
@@ -130,15 +131,15 @@
 			//
 			// groupBox5
 			//
-			this.groupBox5.Controls.Add(this.cbUpdateAutocheck);
-			this.groupBox5.Controls.Add(this.numericUpdateInterval);
-			this.groupBox5.Controls.Add(this.lblMinutes);
-			this.groupBox5.Location = new System.Drawing.Point(12, 125);
-			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(333, 88);
-			this.groupBox5.TabIndex = 14;
-			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = Localisation.Current.suUpdates;
+			this.gbUpdate.Controls.Add(this.cbUpdateAutocheck);
+			this.gbUpdate.Controls.Add(this.numericUpdateInterval);
+			this.gbUpdate.Controls.Add(this.lblMinutes);
+			this.gbUpdate.Location = new System.Drawing.Point(12, 125);
+			this.gbUpdate.Name = "gbUpdate";
+			this.gbUpdate.Size = new System.Drawing.Size(333, 88);
+			this.gbUpdate.TabIndex = 14;
+			this.gbUpdate.TabStop = false;
+			this.gbUpdate.Text = Localisation.Current.suUpdates;
 			//
 			// cbUpdateAutocheck
 			//
@@ -174,16 +175,16 @@
 			//
 			// groupBox3
 			//
-			this.groupBox3.Controls.Add(this.cbTopmost);
-			this.groupBox3.Controls.Add(this.cbCloseToTray);
-			this.groupBox3.Controls.Add(this.cbThumbnailButton);
-			this.groupBox3.Controls.Add(this.cbHideFromAltTab);
-			this.groupBox3.Location = new System.Drawing.Point(12, 34);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(333, 85);
-			this.groupBox3.TabIndex = 13;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = Localisation.Current.sGeneral;
+			this.gbGeneral.Controls.Add(this.cbTopmost);
+			this.gbGeneral.Controls.Add(this.cbCloseToTray);
+			this.gbGeneral.Controls.Add(this.cbThumbnailButton);
+			this.gbGeneral.Controls.Add(this.cbHideFromAltTab);
+			this.gbGeneral.Location = new System.Drawing.Point(12, 34);
+			this.gbGeneral.Name = "gbGeneral";
+			this.gbGeneral.Size = new System.Drawing.Size(333, 85);
+			this.gbGeneral.TabIndex = 13;
+			this.gbGeneral.TabStop = false;
+			this.gbGeneral.Text = Localisation.Current.sGeneral;
 			//
 			// cbTopmost
 			//
@@ -198,7 +199,7 @@
 			// cbCloseToTray
 			//
 			this.cbCloseToTray.AutoSize = true;
-			this.cbCloseToTray.Location = new System.Drawing.Point(6, 55);
+			this.cbCloseToTray.Location = new System.Drawing.Point(6, 40);
 			this.cbCloseToTray.Name = "cbCloseToTray";
 			this.cbCloseToTray.Size = new System.Drawing.Size(84, 17);
 			this.cbCloseToTray.TabIndex = 2;
@@ -210,7 +211,7 @@
 			this.cbThumbnailButton.AutoSize = true;
 			this.cbThumbnailButton.Checked = true;
 			this.cbThumbnailButton.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.cbThumbnailButton.Location = new System.Drawing.Point(174, 12);
+			this.cbThumbnailButton.Location = new System.Drawing.Point(168, 12);
 			this.cbThumbnailButton.Name = "cbThumbnailButton";
 			this.cbThumbnailButton.Size = new System.Drawing.Size(143, 30);
 			this.cbThumbnailButton.TabIndex = 9;
@@ -220,7 +221,7 @@
 			// cbHideFromAltTab
 			//
 			this.cbHideFromAltTab.AutoSize = true;
-			this.cbHideFromAltTab.Location = new System.Drawing.Point(174, 40);
+			this.cbHideFromAltTab.Location = new System.Drawing.Point(168, 40);
 			this.cbHideFromAltTab.Name = "cbHideFromAltTab";
 			this.cbHideFromAltTab.Size = new System.Drawing.Size(158, 30);
 			this.cbHideFromAltTab.TabIndex = 3;
@@ -258,10 +259,8 @@
 			//
 			// tpTheme
 			//
-			this.tpTheme.Controls.Add(this.groupBox6);
-			this.tpTheme.Controls.Add(this.groupBox4);
-			this.tpTheme.Controls.Add(this.groupBox2);
-			this.tpTheme.Controls.Add(this.groupBox1);
+			this.tpTheme.Controls.Add(this.gbVisualiserSettings);
+			this.tpTheme.Controls.Add(this.gbLayout);
 			this.tpTheme.Location = new System.Drawing.Point(4, 22);
 			this.tpTheme.Name = "tpTheme";
 			this.tpTheme.Padding = new System.Windows.Forms.Padding(3);
@@ -270,19 +269,22 @@
 			this.tpTheme.Text = Localisation.Current.sThemeLayout;
 			this.tpTheme.UseVisualStyleBackColor = true;
 			//
-			// groupBox6
+			// gbVisualiserSettings
 			//
-			this.groupBox6.Controls.Add(this.panelVisualiserColor);
-			this.groupBox6.Controls.Add(this.lblVisualiserOpacity);
-			this.groupBox6.Controls.Add(this.lblVisualiserOpacityDesc);
-			this.groupBox6.Controls.Add(this.tbVisualiserOpacity);
-			this.groupBox6.Controls.Add(this.lblVisualiserColor);
-			this.groupBox6.Location = new System.Drawing.Point(188, 86);
-			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(159, 129);
-			this.groupBox6.TabIndex = 27;
-			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = Localisation.Current.svVisualiserTheme;
+			this.gbVisualiserSettings.Controls.Add(this.panelVisualiserColor);
+			this.gbVisualiserSettings.Controls.Add(this.lblVisualiserOpacity);
+			this.gbVisualiserSettings.Controls.Add(this.lblVisualiserOpacityDesc);
+			this.gbVisualiserSettings.Controls.Add(this.tbVisualiserOpacity);
+			this.gbVisualiserSettings.Controls.Add(this.lblVisualiserColor);
+			this.gbVisualiserSettings.Controls.Add(this.cbVisualiserFadeEdges);
+			this.gbVisualiserSettings.Controls.Add(this.cbVisualiserBars);
+			this.gbVisualiserSettings.Controls.Add(this.cbEnableVisualiser);
+			this.gbVisualiserSettings.Location = new System.Drawing.Point(6, 122);
+			this.gbVisualiserSettings.Name = "gbVisualiserSettings";
+			this.gbVisualiserSettings.Size = new System.Drawing.Size(341, 93);
+			this.gbVisualiserSettings.TabIndex = 26;
+			this.gbVisualiserSettings.TabStop = false;
+			this.gbVisualiserSettings.Text = Localisation.Current.svVisualiser;
 			//
 			// panelVisualiserColor
 			//
@@ -290,15 +292,24 @@
 			this.panelVisualiserColor.BorderColor = System.Drawing.Color.Black;
 			this.panelVisualiserColor.BorderWidth = 2;
 			this.panelVisualiserColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panelVisualiserColor.Location = new System.Drawing.Point(9, 40);
+			this.panelVisualiserColor.Location = new System.Drawing.Point(165, 35);
 			this.panelVisualiserColor.Name = "panelVisualiserColor";
 			this.panelVisualiserColor.Size = new System.Drawing.Size(32, 32);
 			this.panelVisualiserColor.TabIndex = 21;
 			//
+			// lblVisualiserColor
+			//
+			this.lblVisualiserColor.AutoSize = true;
+			this.lblVisualiserColor.Location = new System.Drawing.Point(162, 19);
+			this.lblVisualiserColor.Name = "lblVisualiserColor";
+			this.lblVisualiserColor.Size = new System.Drawing.Size(77, 13);
+			this.lblVisualiserColor.TabIndex = 26;
+			this.lblVisualiserColor.Text = Localisation.Current.svVisualiserColor;
+			//
 			// lblVisualiserOpacity
 			//
 			this.lblVisualiserOpacity.AutoSize = true;
-			this.lblVisualiserOpacity.Location = new System.Drawing.Point(131, 98);
+			this.lblVisualiserOpacity.Location = new System.Drawing.Point(315, 39);
 			this.lblVisualiserOpacity.Name = "lblVisualiserOpacity";
 			this.lblVisualiserOpacity.Size = new System.Drawing.Size(22, 13);
 			this.lblVisualiserOpacity.TabIndex = 18;
@@ -307,7 +318,7 @@
 			// lblVisualiserOpacityDesc
 			//
 			this.lblVisualiserOpacityDesc.AutoSize = true;
-			this.lblVisualiserOpacityDesc.Location = new System.Drawing.Point(6, 82);
+			this.lblVisualiserOpacityDesc.Location = new System.Drawing.Point(211, 19);
 			this.lblVisualiserOpacityDesc.Name = "lblVisualiserOpacityDesc";
 			this.lblVisualiserOpacityDesc.Size = new System.Drawing.Size(43, 13);
 			this.lblVisualiserOpacityDesc.TabIndex = 24;
@@ -317,35 +328,14 @@
 			//
 			this.tbVisualiserOpacity.AutoSize = false;
 			this.tbVisualiserOpacity.BackColor = System.Drawing.Color.White;
-			this.tbVisualiserOpacity.Location = new System.Drawing.Point(2, 98);
+			this.tbVisualiserOpacity.Location = new System.Drawing.Point(208, 35);
 			this.tbVisualiserOpacity.Maximum = 255;
 			this.tbVisualiserOpacity.Name = "tbVisualiserOpacity";
-			this.tbVisualiserOpacity.Size = new System.Drawing.Size(123, 24);
+			this.tbVisualiserOpacity.Size = new System.Drawing.Size(110, 24);
 			this.tbVisualiserOpacity.TabIndex = 23;
 			this.tbVisualiserOpacity.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.tbVisualiserOpacity.Value = 1;
 			this.tbVisualiserOpacity.Scroll += new System.EventHandler(this.tbVisualiserOpacity_Scroll);
-			//
-			// lblVisualiserColor
-			//
-			this.lblVisualiserColor.AutoSize = true;
-			this.lblVisualiserColor.Location = new System.Drawing.Point(6, 24);
-			this.lblVisualiserColor.Name = "lblVisualiserColor";
-			this.lblVisualiserColor.Size = new System.Drawing.Size(77, 13);
-			this.lblVisualiserColor.TabIndex = 26;
-			this.lblVisualiserColor.Text = Localisation.Current.svVisualiserColor;
-			//
-			// groupBox4
-			//
-			this.groupBox4.Controls.Add(this.cbVisualiserFadeEdges);
-			this.groupBox4.Controls.Add(this.cbVisualiserBars);
-			this.groupBox4.Controls.Add(this.cbEnableVisualiser);
-			this.groupBox4.Location = new System.Drawing.Point(6, 122);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(170, 93);
-			this.groupBox4.TabIndex = 26;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = Localisation.Current.svVisualiser;
 			//
 			// cbVisualiserFadeEdges
 			//
@@ -377,27 +367,44 @@
 			this.cbEnableVisualiser.Text = Localisation.Current.svEnable;
 			this.cbEnableVisualiser.UseVisualStyleBackColor = true;
 			//
-			// groupBox2
+			// gbLayout
 			//
-			this.groupBox2.Controls.Add(this.lblAccentColor);
-			this.groupBox2.Controls.Add(this.panelAccentColor);
-			this.groupBox2.Controls.Add(this.lblBaseColor);
-			this.groupBox2.Controls.Add(this.panelBaseColor);
-			this.groupBox2.Location = new System.Drawing.Point(188, 6);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(159, 74);
-			this.groupBox2.TabIndex = 18;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = Localisation.Current.scColors;
+			this.gbLayout.Controls.Add(this.lblAccentColor);
+			this.gbLayout.Controls.Add(this.panelAccentColor);
+			this.gbLayout.Controls.Add(this.lblBaseColor);
+			this.gbLayout.Controls.Add(this.panelBaseColor);
+			this.gbLayout.Controls.Add(this.lblResolutionScaleDesc);
+			this.gbLayout.Controls.Add(this.tbResolutionScale);
+			this.gbLayout.Controls.Add(this.lblResolutionScale);
+			this.gbLayout.Controls.Add(this.tbOpacity);
+			this.gbLayout.Controls.Add(this.lblOpacityDesc);
+			this.gbLayout.Controls.Add(this.lblOpacity);
+			this.gbLayout.Controls.Add(this.cbHeartFavSprite);
+			this.gbLayout.Location = new System.Drawing.Point(6, 6);
+			this.gbLayout.Name = "groupBox1";
+			this.gbLayout.Size = new System.Drawing.Size(341, 113);
+			this.gbLayout.TabIndex = 19;
+			this.gbLayout.TabStop = false;
+			this.gbLayout.Text = Localisation.Current.stLayout;
+			//
+			// cbHeartFavSprite
+			//
+			this.cbHeartFavSprite.AutoSize = true;
+			this.cbHeartFavSprite.Location = new System.Drawing.Point(191, 77);
+			this.cbHeartFavSprite.Name = "cbHeartFavSprite";
+			this.cbHeartFavSprite.Size = new System.Drawing.Size(59, 17);
+			this.cbHeartFavSprite.TabIndex = 20;
+			this.cbHeartFavSprite.Text = Localisation.Current.stHeartFav;
+			this.cbHeartFavSprite.UseVisualStyleBackColor = true;
 			//
 			// lblAccentColor
 			//
 			this.lblAccentColor.AutoSize = true;
-			this.lblAccentColor.Location = new System.Drawing.Point(86, 16);
+			this.lblAccentColor.Location = new System.Drawing.Point(188 + 80, 16);
 			this.lblAccentColor.Name = "lblAccentColor";
 			this.lblAccentColor.Size = new System.Drawing.Size(67, 13);
 			this.lblAccentColor.TabIndex = 5;
-			this.lblAccentColor.Text = Localisation.Current.scAccentColor;
+			this.lblAccentColor.Text = Localisation.Current.stAccentColor;
 			//
 			// panelAccentColor
 			//
@@ -405,7 +412,7 @@
 			this.panelAccentColor.BorderColor = System.Drawing.Color.Black;
 			this.panelAccentColor.BorderWidth = 2;
 			this.panelAccentColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panelAccentColor.Location = new System.Drawing.Point(89, 32);
+			this.panelAccentColor.Location = new System.Drawing.Point(271, 32);
 			this.panelAccentColor.Name = "panelAccentColor";
 			this.panelAccentColor.Size = new System.Drawing.Size(32, 32);
 			this.panelAccentColor.TabIndex = 4;
@@ -413,11 +420,11 @@
 			// lblBaseColor
 			//
 			this.lblBaseColor.AutoSize = true;
-			this.lblBaseColor.Location = new System.Drawing.Point(6, 16);
+			this.lblBaseColor.Location = new System.Drawing.Point(188, 16);
 			this.lblBaseColor.Name = "lblBaseColor";
 			this.lblBaseColor.Size = new System.Drawing.Size(57, 13);
 			this.lblBaseColor.TabIndex = 3;
-			this.lblBaseColor.Text = Localisation.Current.scBaseColor;
+			this.lblBaseColor.Text = Localisation.Current.stBaseColor;
 			//
 			// panelBaseColor
 			//
@@ -425,25 +432,10 @@
 			this.panelBaseColor.BorderColor = System.Drawing.Color.Black;
 			this.panelBaseColor.BorderWidth = 2;
 			this.panelBaseColor.Cursor = System.Windows.Forms.Cursors.Hand;
-			this.panelBaseColor.Location = new System.Drawing.Point(9, 32);
+			this.panelBaseColor.Location = new System.Drawing.Point(191, 32);
 			this.panelBaseColor.Name = "panelBaseColor";
 			this.panelBaseColor.Size = new System.Drawing.Size(32, 32);
 			this.panelBaseColor.TabIndex = 2;
-			//
-			// groupBox1
-			//
-			this.groupBox1.Controls.Add(this.lblResolutionScaleDesc);
-			this.groupBox1.Controls.Add(this.tbResolutionScale);
-			this.groupBox1.Controls.Add(this.lblResolutionScale);
-			this.groupBox1.Controls.Add(this.tbOpacity);
-			this.groupBox1.Controls.Add(this.lblOpacityDesc);
-			this.groupBox1.Controls.Add(this.lblOpacity);
-			this.groupBox1.Location = new System.Drawing.Point(6, 6);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(170, 113);
-			this.groupBox1.TabIndex = 19;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = Localisation.Current.stLayout;
 			//
 			// lblResolutionScaleDesc
 			//
@@ -590,21 +582,21 @@
 			this.tabControl.ResumeLayout(false);
 			this.tpGeneral.ResumeLayout(false);
 			this.tpGeneral.PerformLayout();
-			this.groupBox5.ResumeLayout(false);
-			this.groupBox5.PerformLayout();
+			this.gbUpdate.ResumeLayout(false);
+			this.gbUpdate.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateInterval)).EndInit();
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
+			this.gbGeneral.ResumeLayout(false);
+			this.gbGeneral.PerformLayout();
 			this.tpTheme.ResumeLayout(false);
-			this.groupBox6.ResumeLayout(false);
-			this.groupBox6.PerformLayout();
+			///this.gbVisualiserTheme.ResumeLayout(false);
+			///this.gbVisualiserTheme.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbVisualiserOpacity)).EndInit();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox4.PerformLayout();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.gbVisualiserSettings.ResumeLayout(false);
+			this.gbVisualiserSettings.PerformLayout();
+			///this.gbColors.ResumeLayout(false);
+			///this.gbColors.PerformLayout();
+			this.gbLayout.ResumeLayout(false);
+			this.gbLayout.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).EndInit();
 			this.tpAccount.ResumeLayout(false);
@@ -642,26 +634,27 @@
 		private System.Windows.Forms.TrackBar tbOpacity;
 		private System.Windows.Forms.Label lblResolutionScaleDesc;
 		private System.Windows.Forms.TrackBar tbResolutionScale;
-		private System.Windows.Forms.GroupBox groupBox2;
+		///private System.Windows.Forms.GroupBox gbColors;
 		private System.Windows.Forms.Label lblAccentColor;
 		private Controls.BorderedPanel panelAccentColor;
 		private System.Windows.Forms.Label lblBaseColor;
 		private Controls.BorderedPanel panelBaseColor;
-		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox gbLayout;
 		private System.Windows.Forms.Button btnRefreshAudioDevices;
 		private System.Windows.Forms.Label lblAudioDevice;
 		private System.Windows.Forms.ComboBox dropdownAudioDevices;
 		private System.Windows.Forms.CheckBox cbVisualiserFadeEdges;
 		private System.Windows.Forms.CheckBox cbEnableVisualiser;
+		private System.Windows.Forms.CheckBox cbHeartFavSprite;
 		private System.Windows.Forms.Label lblVisualiserOpacityDesc;
 		private Controls.BorderedPanel panelVisualiserColor;
 		private System.Windows.Forms.TrackBar tbVisualiserOpacity;
 		private System.Windows.Forms.CheckBox cbVisualiserBars;
-		private System.Windows.Forms.GroupBox groupBox3;
-		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.GroupBox gbGeneral;
+		private System.Windows.Forms.GroupBox gbVisualiserSettings;
 		private System.Windows.Forms.Label lblVisualiserColor;
 		private System.Windows.Forms.Label lblVisualiserOpacity;
-		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.GroupBox groupBox6;
+		private System.Windows.Forms.GroupBox gbUpdate;
+		///private System.Windows.Forms.GroupBox gbVisualiserTheme;
 	}
 }

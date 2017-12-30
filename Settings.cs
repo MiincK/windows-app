@@ -23,6 +23,7 @@ namespace ListenMoeClient
 		CloseToTray,
 		HideFromAltTab,
 		ThumbnailButton,
+		HeartFavSprite,
 
 		//Visualiser settings
 		EnableVisualiser,
@@ -166,6 +167,7 @@ namespace ListenMoeClient
 			Set(Setting.EnableVisualiser, true);
 			Set(Setting.VisualiserBars, true);
 			Set(Setting.VisualiserFadeEdges, false);
+			Set(Setting.HeartFavSprite, false);
 
 			Set(Setting.Token, "");
 			Set(Setting.Username, "");
