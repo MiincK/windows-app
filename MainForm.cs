@@ -127,6 +127,8 @@ namespace ListenMoeClient
 		Sprite darkFavSprite;
 		Sprite fadedFavSprite;
 
+		bool heartFavSprite;
+
 		private ThumbnailToolBarButton button;
 
 		CancellationTokenSource cts;
@@ -172,7 +174,7 @@ namespace ListenMoeClient
 			trayIcon.ContextMenu = contextMenu2;
 			trayIcon.Icon = Properties.Resources.icon;
 
-			LoadFavSprite(false);
+			LoadFavSprite(heartFavSprite);
 
 			if (Settings.Get<bool>(Setting.ThumbnailButton))
 			{
@@ -216,9 +218,15 @@ namespace ListenMoeClient
 
 			picFavourite.ResetScale();
 			if (heart)
+			{
 				picFavourite.Size = new Size(48, 48);
+				picFavourite.Location = new Point(-8, 2);
+			}
 			else
+			{
 				picFavourite.Size = new Size(32, 32);
+				picFavourite.Location = new Point(0, 10);
+			}
 
 			bool favourite = songInfoStream?.currentInfo.extended?.favorite ?? false;
 			picFavourite.Image = favourite ? favSprite.Frames[favSprite.Frames.Length - 1] : favSprite.Frames[0];
@@ -348,6 +356,14 @@ namespace ListenMoeClient
 
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			RawInput.RegisterCallback(VirtualKeys.MediaPlayPause, async () => await TogglePlayback());
+			RawInput.RegisterPassword(new[] {
+				VirtualKeys.Up, VirtualKeys.Up,
+				VirtualKeys.Down, VirtualKeys.Down,
+				VirtualKeys.Left, VirtualKeys.Right,
+				VirtualKeys.Left, VirtualKeys.Right,
+				VirtualKeys.B, VirtualKeys.A,
+				VirtualKeys.Return
+			}, () => LoadFavSprite(heartFavSprite = !heartFavSprite));
 			this.Invalidate();
 		}
 
