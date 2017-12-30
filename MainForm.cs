@@ -173,8 +173,6 @@ namespace ListenMoeClient
 
 			trayIcon.ContextMenu = contextMenu2;
 			trayIcon.Icon = Properties.Resources.icon;
-			
-			LoadFavSprite();
 
 			if (Settings.Get<bool>(Setting.ThumbnailButton))
 			{
