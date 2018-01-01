@@ -43,7 +43,8 @@ namespace ListenMoeClient
 		Volume,
 		OutputDeviceGuid,
 		Token,
-		Username
+		Username,
+		Language
 	}
 
 	//I should have just used a json serialiser
@@ -174,6 +175,7 @@ namespace ListenMoeClient
 			Set(Setting.Token, "");
 			Set(Setting.Username, "");
 			Set(Setting.OutputDeviceGuid, "");
+			Set(Setting.Language, "");
 
 			Set(Setting.VisualiserColor, Color.FromArgb(236, 26, 85));
 			Set(Setting.BaseColor, Color.FromArgb(44, 46, 59));

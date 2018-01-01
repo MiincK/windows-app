@@ -20,6 +20,7 @@
 		public string sAccount { get; protected set; }
 
 		public string sRequiesRestart { get; protected set; }
+		public string sRequiesRestartSplit { get; protected set; }
 
 		public string sgAudioDevice { get; protected set; }
 		public string sgRefresh { get; protected set; }
@@ -28,6 +29,9 @@
 		public string sgThumbnailToolbarButton { get; protected set; }
 		public string sgHideFromAltTab { get; protected set; }
 		public string sgFixedSize { get; protected set; }
+
+		public string slLanguage { get; protected set; }
+		public string slSystemDefault { get; protected set; }
 
 		public string suUpdates { get; protected set; }
 		public string suCheckForUpdatesEvery { get; protected set; }
@@ -72,6 +76,7 @@
 			sThemeLayout = "Theme & Layout";
 			sAccount = "Account";
 			sRequiesRestart = "(requies restart)";
+			sRequiesRestartSplit = "(requies\nrestart)";
 
 			sgAudioDevice = "Audio device:";
 			sgRefresh = "Refresh";
@@ -80,6 +85,9 @@
 			sgThumbnailToolbarButton = "Thumbnail toolbar button";
 			sgHideFromAltTab = "Hide from Alt-Tab menu\nand taskbar (show tray only)";
 			sgFixedSize = "Disallow resizing";
+
+			slLanguage = "Language";
+			slSystemDefault = "System Default";
 
 			suUpdates = "Updates";
 			suCheckForUpdatesEvery = "Check for updates every:";

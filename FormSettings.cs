@@ -73,6 +73,14 @@ namespace ListenMoeClient
 			};
 
 			reloadAudioDevices();
+
+			var languages = new Lang[] {
+				new Lang("", Localisation.Current.slSystemDefault),
+				new Lang("en", "English"),
+				new Lang("ru", "Русский")
+			};
+			dropdownLanguage.DataSource = languages;
+			dropdownLanguage.SelectedItem = languages.Where(x => x.TwoLetter.Equals(Settings.Get<string>(Setting.Language))).FirstOrDefault();
 		}
 
 		private void NumericUpdateInterval_ValueChanged(object sender, EventArgs e)
@@ -175,6 +183,13 @@ namespace ListenMoeClient
 			audioPlayer.SetAudioOutputDevice(selected.DeviceInfo.Guid);
 		}
 
+		private void cbLanguage_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			string selected = ((Lang)dropdownLanguage.SelectedItem).TwoLetter;
+			Settings.Set(Setting.Language, selected);
+			Settings.WriteSettings();
+		}
+
 		private void btnRefreshAudioDevices_Click(object sender, EventArgs e)
 		{
 			reloadAudioDevices();
@@ -188,6 +203,22 @@ namespace ListenMoeClient
 
 				btnLogin.PerformClick();
 			}
+		}
+	}
+
+	public struct Lang
+	{
+		public string TwoLetter;
+		string FullName;
+		public override string ToString()
+		{
+			return FullName;
+		}
+
+		public Lang(string twoLetter, string fullName)
+		{
+			this.FullName = fullName;
+			this.TwoLetter = twoLetter;
 		}
 	}
 }

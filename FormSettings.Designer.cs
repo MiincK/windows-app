@@ -32,6 +32,7 @@
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tpGeneral = new System.Windows.Forms.TabPage();
 			this.gbUpdate = new System.Windows.Forms.GroupBox();
+			this.gbLanguage = new System.Windows.Forms.GroupBox();
 			this.cbUpdateAutocheck = new System.Windows.Forms.CheckBox();
 			this.numericUpdateInterval = new System.Windows.Forms.NumericUpDown();
 			this.lblMinutes = new System.Windows.Forms.Label();
@@ -44,6 +45,8 @@
 			this.btnRefreshAudioDevices = new System.Windows.Forms.Button();
 			this.lblAudioDevice = new System.Windows.Forms.Label();
 			this.dropdownAudioDevices = new System.Windows.Forms.ComboBox();
+			this.lblLanguage = new System.Windows.Forms.Label();
+			this.dropdownLanguage = new System.Windows.Forms.ComboBox();
 			this.tpTheme = new System.Windows.Forms.TabPage();
 			this.panelVisualiserColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblVisualiserOpacity = new System.Windows.Forms.Label();
@@ -82,6 +85,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.tbVisualiserOpacity)).BeginInit();
 			this.gbVisualiserSettings.SuspendLayout();
 			this.gbLayout.SuspendLayout();
+			this.gbLanguage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).BeginInit();
 			this.tpAccount.SuspendLayout();
@@ -115,6 +119,7 @@
 			//
 			this.tpGeneral.Controls.Add(this.gbUpdate);
 			this.tpGeneral.Controls.Add(this.gbGeneral);
+			this.tpGeneral.Controls.Add(this.gbLanguage);
 			this.tpGeneral.Controls.Add(this.btnRefreshAudioDevices);
 			this.tpGeneral.Controls.Add(this.lblAudioDevice);
 			this.tpGeneral.Controls.Add(this.dropdownAudioDevices);
@@ -133,7 +138,7 @@
 			this.gbUpdate.Controls.Add(this.lblMinutes);
 			this.gbUpdate.Location = new System.Drawing.Point(12, 125);
 			this.gbUpdate.Name = "gbUpdate";
-			this.gbUpdate.Size = new System.Drawing.Size(333, 88);
+			this.gbUpdate.Size = new System.Drawing.Size(197, 88);
 			this.gbUpdate.TabIndex = 14;
 			this.gbUpdate.TabStop = false;
 			this.gbUpdate.Text = Localisation.Current.suUpdates;
@@ -198,7 +203,7 @@
 			//
 			this.cbFixedSize.AutoSize = true;
 			this.cbFixedSize.Location = new System.Drawing.Point(6, 61);
-			this.cbFixedSize.Name = "cbTopmost";
+			this.cbFixedSize.Name = "cbFixedSize";
 			this.cbFixedSize.Size = new System.Drawing.Size(117, 17);
 			this.cbFixedSize.TabIndex = 0;
 			this.cbFixedSize.Text = Localisation.Current.sgFixedSize;
@@ -264,6 +269,36 @@
 			this.dropdownAudioDevices.Size = new System.Drawing.Size(175, 21);
 			this.dropdownAudioDevices.TabIndex = 10;
 			this.dropdownAudioDevices.SelectionChangeCommitted += new System.EventHandler(this.cbAudioDevices_SelectionChangeCommitted);
+			//
+			// groupBox3
+			//
+			this.gbLanguage.Controls.Add(this.lblLanguage);
+			this.gbLanguage.Controls.Add(this.dropdownLanguage);
+			this.gbLanguage.Location = new System.Drawing.Point(217, 125);
+			this.gbLanguage.Name = "gbLanguage";
+			this.gbLanguage.Size = new System.Drawing.Size(128, 88);
+			this.gbLanguage.TabIndex = 13;
+			this.gbLanguage.TabStop = false;
+			this.gbLanguage.Text = Localisation.Current.slLanguage;
+			//
+			// lblLanguage
+			//
+			this.lblLanguage.AutoSize = true;
+			this.lblLanguage.Location = new System.Drawing.Point(9, 14);
+			this.lblLanguage.Name = "lblLanguage";
+			this.lblLanguage.Size = new System.Drawing.Size(72, 13);
+			this.lblLanguage.TabIndex = 11;
+			this.lblLanguage.Text = Localisation.Current.slLanguage + " " + Localisation.Current.sRequiesRestartSplit + ":";
+			//
+			// dropdownLanguage
+			//
+			this.dropdownLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.dropdownLanguage.FormattingEnabled = true;
+			this.dropdownLanguage.Location = new System.Drawing.Point(9, 46);
+			this.dropdownLanguage.Name = "dropdownLanguage";
+			this.dropdownLanguage.Size = new System.Drawing.Size(100, 21);
+			this.dropdownLanguage.TabIndex = 10;
+			this.dropdownLanguage.SelectionChangeCommitted += new System.EventHandler(this.cbLanguage_SelectionChangeCommitted);
 			//
 			// tpTheme
 			//
@@ -601,6 +636,8 @@
 			this.gbVisualiserSettings.PerformLayout();
 			this.gbLayout.ResumeLayout(false);
 			this.gbLayout.PerformLayout();
+			this.gbLanguage.ResumeLayout(false);
+			this.gbLanguage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).EndInit();
 			this.tpAccount.ResumeLayout(false);
@@ -646,7 +683,10 @@
 		private System.Windows.Forms.GroupBox gbLayout;
 		private System.Windows.Forms.Button btnRefreshAudioDevices;
 		private System.Windows.Forms.Label lblAudioDevice;
+		private System.Windows.Forms.GroupBox gbLanguage;
 		private System.Windows.Forms.ComboBox dropdownAudioDevices;
+		private System.Windows.Forms.Label lblLanguage;
+		private System.Windows.Forms.ComboBox dropdownLanguage;
 		private System.Windows.Forms.CheckBox cbVisualiserFadeEdges;
 		private System.Windows.Forms.CheckBox cbEnableVisualiser;
 		private System.Windows.Forms.CheckBox cbHeartFavSprite;

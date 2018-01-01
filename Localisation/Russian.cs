@@ -21,6 +21,7 @@
 			sThemeLayout = "Внешний вид";
 			sAccount = "Аккаунт";
 			sRequiesRestart = "(необходим перезапуск)";
+			sRequiesRestartSplit = "(необходим\nперезапуск)";
 
 			sgAudioDevice = "Устройство:";
 			sgRefresh = "Обновить";
@@ -29,6 +30,9 @@
 			sgThumbnailToolbarButton = "Управление в панели задач";
 			sgHideFromAltTab = "Скрывать в меню Alt-Tab и\nпанели задач (Показывать\nтолько в трее)";
 			sgFixedSize = "Постоянный размер окна";
+			
+			slLanguage = "Язык";
+			slSystemDefault = "Язык системы";
 
 			suUpdates = "Обновление";
 			suCheckForUpdatesEvery = "Проверять обновления каждые:";

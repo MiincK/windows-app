@@ -145,6 +145,10 @@ namespace ListenMoeClient
 
 		public MainForm()
 		{
+			Settings.LoadSettings();
+			//Write immediately after loading to flush any new default settings
+			Settings.WriteSettings();
+			Localisation.SetLanguage(Settings.Get<string>(Setting.Language));
 			InitializeComponent();
 			this.MinimumSize = new Size(Settings.DEFAULT_WIDTH, Settings.DEFAULT_HEIGHT);
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
@@ -157,9 +161,6 @@ namespace ListenMoeClient
 			panelRight.MouseUp += Form1_MouseUp;
 
 			contextMenu1.MenuItems.Add(new MenuItem("LISTEN.moe Desktop Client v" + Globals.VERSION.ToString()) { Enabled = false });
-			Settings.LoadSettings();
-			//Write immediately after loading to flush any new default settings
-			Settings.WriteSettings();
 
 			cts = new CancellationTokenSource();
 			ct = cts.Token;
