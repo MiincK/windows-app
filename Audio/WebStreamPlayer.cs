@@ -31,6 +31,7 @@ namespace ListenMoeClient
 
 		private async void InternetDisconnected(object sender, System.Timers.ElapsedEventArgs e)
 		{
+			if (!playing) return;
 			Globals.InternetDisconnected();
 			await Stop();
 			Thread.Sleep(100);

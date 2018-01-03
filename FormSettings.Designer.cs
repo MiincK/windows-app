@@ -131,7 +131,7 @@
 			this.tpGeneral.Text = Localisation.Current.sGeneral;
 			this.tpGeneral.UseVisualStyleBackColor = true;
 			//
-			// groupBox5
+			// gbUpdate
 			//
 			this.gbUpdate.Controls.Add(this.cbUpdateAutocheck);
 			this.gbUpdate.Controls.Add(this.numericUpdateInterval);
@@ -175,7 +175,7 @@
 			this.lblMinutes.TabIndex = 8;
 			this.lblMinutes.Text = Localisation.Current.suMins;
 			//
-			// groupBox3
+			// gbGeneral
 			//
 			this.gbGeneral.Controls.Add(this.cbTopmost);
 			this.gbGeneral.Controls.Add(this.cbCloseToTray);
@@ -270,7 +270,7 @@
 			this.dropdownAudioDevices.TabIndex = 10;
 			this.dropdownAudioDevices.SelectionChangeCommitted += new System.EventHandler(this.cbAudioDevices_SelectionChangeCommitted);
 			//
-			// groupBox3
+			// gbLanguage
 			//
 			this.gbLanguage.Controls.Add(this.lblLanguage);
 			this.gbLanguage.Controls.Add(this.dropdownLanguage);
