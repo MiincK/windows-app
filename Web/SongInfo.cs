@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using WebSocketSharp;
 
-#pragma warning disable IDE1006
 namespace ListenMoeClient
 {
 	public class SongInfo

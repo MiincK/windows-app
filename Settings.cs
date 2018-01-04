@@ -6,7 +6,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-#pragma warning disable IDE1006
 namespace ListenMoeClient
 {
 	enum Setting

@@ -44,8 +44,7 @@ namespace ListenMoeClient
 				DiscardOnBufferOverflow = true
 			};
 
-			volumeChannel = new SampleChannel(provider);
-			volumeChannel.Volume = Settings.Get<float>(Setting.Volume);
+			volumeChannel = new SampleChannel(provider) { Volume = Settings.Get<float>(Setting.Volume) };
 
 			bool success = Guid.TryParse(Settings.Get<string>(Setting.OutputDeviceGuid), out Guid deviceGuid);
 

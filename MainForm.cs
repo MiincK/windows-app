@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-#pragma warning disable IDE1006
 namespace ListenMoeClient
 {
 	public partial class MainForm : Form
