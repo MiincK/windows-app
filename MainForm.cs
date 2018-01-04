@@ -605,14 +605,10 @@ namespace ListenMoeClient
 
 		void ProcessSongInfo(SongInfo songInfo)
 		{
-			string albumName = songInfo.anime_name;
 			string middle = "";
-			if (!string.IsNullOrEmpty(songInfo.requested_by))
-			{
-				middle = songInfo.requested_by.Contains(" ") ? "" : String.Format(Localisation.Current.mReqestedBy, songInfo.requested_by);
-				if (!string.IsNullOrWhiteSpace(albumName))
-					middle = albumName + "; " + middle;
-			}
+			middle = string.IsNullOrWhiteSpace(songInfo.requested_by) ? "" : string.Format(Localisation.Current.mReqestedBy, songInfo.requested_by);
+			if (!string.IsNullOrWhiteSpace(songInfo.anime_name))
+				middle = songInfo.anime_name + (string.IsNullOrWhiteSpace(middle) ? "" : "; ") + middle;
 			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), middle);
 
 			if (songInfo.extended != null)
