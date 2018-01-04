@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
-using NAudio.Wave;
 
+#pragma warning disable IDE1006
 namespace ListenMoeClient
 {
 

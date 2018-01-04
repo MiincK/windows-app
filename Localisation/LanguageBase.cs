@@ -1,4 +1,5 @@
-﻿namespace ListenMoeClient
+﻿#pragma warning disable IDE1006
+namespace ListenMoeClient
 {
 	public class LanguageBase
 	{

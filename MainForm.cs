@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
+#pragma warning disable IDE1006
 namespace ListenMoeClient
 {
 	public partial class MainForm : Form
@@ -668,8 +669,7 @@ namespace ListenMoeClient
 		{
 			if (SettingsForm == null)
 			{
-				SettingsForm = new FormSettings(this, player.BasePlayer);
-				SettingsForm.StartPosition = FormStartPosition.CenterScreen;
+				SettingsForm = new FormSettings(this, player.BasePlayer) { StartPosition = FormStartPosition.CenterScreen };
 				SettingsForm.Show();
 			}
 			else
