@@ -30,7 +30,7 @@
 			sgThumbnailToolbarButton = "Управление в панели задач";
 			sgHideFromAltTab = "Скрывать в меню Alt-Tab и\nпанели задач (Показывать\nтолько в трее)";
 			sgFixedSize = "Постоянный размер окна";
-			
+
 			slLanguage = "Язык";
 			slSystemDefault = "Язык системы";
 

@@ -107,7 +107,7 @@ namespace ListenMoeClient
 			lblTitle.RecalculateBounds();
 			lblAlbum.RecalculateBounds();
 		}
-		
+
 		public void StartVisualiser(WebStreamPlayer player)
 		{
 			if (Visualiser == null)
