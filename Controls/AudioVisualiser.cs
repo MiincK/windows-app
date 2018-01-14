@@ -87,8 +87,6 @@ namespace ListenMoeClient
 				anchor = now;
 				for (int i = 0; i < currentPos && sampleBuffer.Count > 0 || sampleBuffer.Count > Globals.SAMPLE_RATE * 8; i++)
 					sampleBuffer.PopLeft();
-
-				Console.WriteLine("sbc: " + sampleBuffer.Count);
 			}
 		}
 
