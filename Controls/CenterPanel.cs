@@ -118,6 +118,11 @@ namespace ListenMoeClient
 				Visualiser.Start();
 				player.SetVisualiser(Visualiser);
 			}
+			else if (Visualiser.stopped)
+			{
+				Visualiser.Start();
+				player.SetVisualiser(Visualiser);
+			}
 		}
 
 		public void StopVisualiser(WebStreamPlayer player)
@@ -126,7 +131,6 @@ namespace ListenMoeClient
 			{
 				player.SetVisualiser(null);
 				Visualiser.Stop();
-				Visualiser = null;
 			}
 		}
 

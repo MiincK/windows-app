@@ -24,7 +24,7 @@ namespace ListenMoeClient
 		float barWidth = Settings.Get<float>(Setting.VisualiserBarWidth);
 
 		bool bars = true;
-		bool stopped = false;
+		internal bool stopped = false;
 
 		Rectangle Bounds = Rectangle.Empty;
 		Color visualiserColor;
@@ -99,8 +99,7 @@ namespace ListenMoeClient
 		public void Stop()
 		{
 			stopped = true;
-			sampleBuffer.Clear();
-			anchor = DateTime.MinValue;
+			ClearBuffers();
 		}
 
 		public void Start()
