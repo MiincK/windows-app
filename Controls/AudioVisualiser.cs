@@ -20,6 +20,7 @@ namespace ListenMoeClient
 		float ScaleFactor = 1f;
 		float normalisationFactor = 0.9f;
 
+		internal float volumeModifier = Settings.Get<float>(Setting.Volume);
 		int resolutionFactor = Settings.Get<int>(Setting.VisualiserResolutionFactor); //higher = lower resolution, number is the number of samples to skip
 		float barWidth = Settings.Get<float>(Setting.VisualiserBarWidth);
 
@@ -85,7 +86,7 @@ namespace ListenMoeClient
 				DateTime now = DateTime.Now;
 				int currentPos = (int)(Globals.SAMPLE_RATE * ((now - anchor).TotalMilliseconds / 1000)) * 2;
 				anchor = now;
-				for (int i = 0; i < currentPos && sampleBuffer.Count > 0 || sampleBuffer.Count > Globals.SAMPLE_RATE * 8; i++)
+				for (int i = 0; i < currentPos && sampleBuffer.Count > 0 || sampleBuffer.Count > Globals.SAMPLE_RATE * 7.5; i++)
 					sampleBuffer.PopLeft();
 			}
 		}
@@ -140,7 +141,7 @@ namespace ListenMoeClient
 			applyWindowFunction(window);
 			float[] bins = FFT.Fft(window, exponent);
 			bins = bins.Take(bins.Length / 4).ToArray();
-			bins = bins.Select(f => (float)Math.Log10(f * 10) * 2 + 1).Select(f => ((f - 0.3f) * 1.5f) + 1.5f).ToArray();
+			bins = bins.Select(f => (float)((Math.Log10(f * 10) * 2 + 1 - 0.3) * 1.5 + 1.5)).ToArray();
 			return bins;
 		}
 
@@ -173,7 +174,7 @@ namespace ListenMoeClient
 			PointF[] points = new PointF[noPoints];
 
 			for (int i = 1; i < fftPoints.Length; i++)
-				fftPoints[i] = fftPoints[i] * bias + lastFftPoints[i] * (1 - bias);
+				fftPoints[i] = fftPoints[i] * (float)Math.Pow(volumeModifier, 0.25) * bias + lastFftPoints[i] * (1 - bias);
 
 			int j = 0;
 			if (logarithmic)

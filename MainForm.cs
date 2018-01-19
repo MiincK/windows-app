@@ -508,6 +508,8 @@ namespace ListenMoeClient
 						Settings.Set(Setting.Volume, newVol);
 						Settings.WriteSettings();
 						SetVolumeLabel(newVol);
+						if(centerPanel.Visualiser != null)
+							centerPanel.Visualiser.volumeModifier = newVol * 2.4f;
 					}
 				}
 			}
