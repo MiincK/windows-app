@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -35,6 +36,9 @@ namespace ListenMoeClient
 
 		Queue<short[]> samplesToPlay = new Queue<short[]>();
 
+		bool firstPacket;
+		bool playing;
+
 		public AudioPlayer()
 		{
 			WaveFormat format = new WaveFormat(Globals.SAMPLE_RATE, 2);
@@ -68,12 +72,14 @@ namespace ListenMoeClient
 		{
 			provider.ClearBuffer();
 			directOut.Play();
+			playing = true;
 		}
 
 		public void Stop()
 		{
 			directOut.Stop();
 			provider.ClearBuffer();
+			playing = false;
 		}
 
 		public void Dispose()
@@ -93,6 +99,24 @@ namespace ListenMoeClient
 			byte[] bytes = new byte[samples.Length * 2];
 			Buffer.BlockCopy(samples, 0, bytes, 0, bytes.Length);
 			provider.AddSamples(bytes, 0, bytes.Length);
+
+			if (!firstPacket)
+				new Thread(delegate ()
+				{
+					firstPacket = true;
+					Thread.Sleep(1000);
+					while (playing)
+					{
+						if (provider.BufferedDuration.TotalMilliseconds < 500)
+						{
+							Globals.InternetDisconnected();
+							break;
+						}
+						Thread.Sleep(200);
+					}
+					firstPacket = false;
+				})
+				{ Name = "InternetCheck", IsBackground = true }.Start();
 		}
 
 		private float BoundVolume(float vol)

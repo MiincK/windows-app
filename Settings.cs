@@ -39,7 +39,6 @@ namespace ListenMoeClient
 		//Misc
 		UpdateAutocheck,
 		UpdateInterval,
-		InternetTimeout,
 		Volume,
 		OutputDeviceGuid,
 		Token,
@@ -146,7 +145,6 @@ namespace ListenMoeClient
 			Set(Setting.LocationY, 100);
 			Set(Setting.VisualiserResolutionFactor, 3);
 			Set(Setting.UpdateInterval, 3600); //in seconds
-			Set(Setting.InternetTimeout, 5);
 			Set(Setting.SizeX, DEFAULT_WIDTH);
 			Set(Setting.SizeY, DEFAULT_HEIGHT);
 			Set(Setting.FftSize, 2048);

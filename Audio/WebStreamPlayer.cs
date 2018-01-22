@@ -12,8 +12,6 @@ namespace ListenMoeClient
 
 		Thread provideThread;
 
-		System.Timers.Timer tmrInternet;
-
 		Ogg ogg = new Ogg();
 		OpusDecoder decoder = OpusDecoder.Create(Globals.SAMPLE_RATE, 2);
 
@@ -24,15 +22,12 @@ namespace ListenMoeClient
 
 		public WebStreamPlayer(string url)
 		{
-			tmrInternet = new System.Timers.Timer(Settings.Get<int>(Setting.InternetTimeout) * 1000);
-			tmrInternet.Elapsed += InternetDisconnected;
 			this.url = url;
 		}
 
-		private async void InternetDisconnected(object sender, System.Timers.ElapsedEventArgs e)
+		private async void InternetDisconnected()
 		{
 			if (!playing) return;
-			Globals.InternetDisconnected();
 			await Stop();
 			Thread.Sleep(100);
 			Play();
@@ -67,8 +62,6 @@ namespace ListenMoeClient
 						while (playing)
 						{
 							byte[][] packets = ogg.GetAudioPackets(readFullyStream);
-							tmrInternet.Stop();
-							tmrInternet.Start();
 
 							for (int i = 0; i < packets.Length; i++)
 							{
@@ -109,7 +102,6 @@ namespace ListenMoeClient
 			if (playing)
 			{
 				playing = false;
-				tmrInternet.Stop();
 
 				BasePlayer.Stop();
 
