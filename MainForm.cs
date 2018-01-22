@@ -614,7 +614,7 @@ namespace ListenMoeClient
 			//if (!string.IsNullOrWhiteSpace(songInfo.anime_name))
 			//	middle = songInfo.anime_name + (string.IsNullOrWhiteSpace(middle) ? "" : "; ") + middle;
 			//centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), middle);
-			string eventInfo = songInfo.requester != null ? "Requested by " + songInfo.requester : songInfo._event ?? "";
+			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester) : songInfo._event ?? "";
 			var source = songInfo.song.source.Length > 0 ? songInfo.song.source[0] : "";
 			eventInfo = string.IsNullOrWhiteSpace(eventInfo) ? source : source + "; " + eventInfo;
 			centerPanel.SetLabelText(songInfo.song.title,
