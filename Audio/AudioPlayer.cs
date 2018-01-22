@@ -107,12 +107,12 @@ namespace ListenMoeClient
 					Thread.Sleep(1000);
 					while (playing)
 					{
-						if (provider.BufferedDuration.TotalMilliseconds < 500)
+						if (provider.BufferedDuration.TotalMilliseconds < 1500)
 						{
 							Globals.InternetDisconnected();
 							break;
 						}
-						Thread.Sleep(200);
+						Thread.Sleep(50);
 					}
 					firstPacket = false;
 				})
