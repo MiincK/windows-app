@@ -6,3 +6,4 @@ icon.psd
 CrappyListenMoe.csproj.user
 packages/
 CsGrid/
+*.bkp.*
