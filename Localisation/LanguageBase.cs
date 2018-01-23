@@ -9,6 +9,7 @@
 		public string tExit { get; protected set; }
 
 		public string rCopySongInfo { get; protected set; }
+		public string rConnecting { get; protected set; }
 
 		public string mReqestedBy { get; protected set; }
 		public string mUpdateAvailable { get; protected set; }
@@ -53,6 +54,8 @@
 
 		public string saUsername { get; protected set; }
 		public string saPassword { get; protected set; }
+		public string saWrong2faCode { get; protected set; }
+		public string sa2faSubmit { get; protected set; }
 		public string saLogin { get; protected set; }
 		public string saLoggedInAs { get; protected set; }
 		public string saLogout { get; protected set; }
@@ -66,6 +69,7 @@
 			tExit = "Exit";
 
 			rCopySongInfo = "Copy song info";
+			rConnecting = "Connecting...";
 
 			mReqestedBy = "Requseted by {0}";
 			mUpdateAvailable = "An update is available for the Listen.moe player. Do you want to update and restart the application now?";
@@ -110,6 +114,8 @@
 			saUsername = "Username";
 			saPassword = "Password";
 			saLogin = "Login";
+			saWrong2faCode = "Incorrect two factor authentication code provided.";
+			sa2faSubmit = "Submit";
 			saLoggedInAs = "Logged in as {0}";
 			saLogout = "Logout";
 		}

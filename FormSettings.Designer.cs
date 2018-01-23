@@ -579,7 +579,7 @@
 			this.lblIncorrectTwoFactorAuth.Name = "lblIncorrectTwoFactorAuth";
 			this.lblIncorrectTwoFactorAuth.Size = new System.Drawing.Size(243, 13);
 			this.lblIncorrectTwoFactorAuth.TabIndex = 3;
-			this.lblIncorrectTwoFactorAuth.Text = "Incorrect two factor authentication code provided.";
+			this.lblIncorrectTwoFactorAuth.Text = Localisation.Current.saWrong2faCode;
 			this.lblIncorrectTwoFactorAuth.Visible = false;
 			//
 			// btnTwoFactorAuthSubmit
@@ -588,7 +588,7 @@
 			this.btnTwoFactorAuthSubmit.Name = "btnTwoFactorAuthSubmit";
 			this.btnTwoFactorAuthSubmit.Size = new System.Drawing.Size(75, 23);
 			this.btnTwoFactorAuthSubmit.TabIndex = 0;
-			this.btnTwoFactorAuthSubmit.Text = "Submit";
+			this.btnTwoFactorAuthSubmit.Text = Localisation.Current.sa2faSubmit;
 			this.btnTwoFactorAuthSubmit.UseVisualStyleBackColor = true;
 			this.btnTwoFactorAuthSubmit.Click += new System.EventHandler(this.btnTwoFactorAuthSubmit_Click);
 			//

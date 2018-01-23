@@ -11,6 +11,7 @@
 			tExit = "Выход";
 
 			rCopySongInfo = "Скопировать информацию о песне";
+			rConnecting = "Соединение...";
 
 			mReqestedBy = "Запрошено {0}";
 			mUpdateAvailable = "Доступно обновление для плеера Listen.moe. Хотите ли вы скачать его и перезапустить приложение сейчас?";
@@ -55,6 +56,8 @@
 			saUsername = "Имя пользователя";
 			saPassword = "Пароль";
 			saLogin = "Войти";
+			saWrong2faCode = "Неверный код двухфакторной аутентификации.";
+			sa2faSubmit = "Подтвердить";
 			saLoggedInAs = "Вы вошли как {0}";
 			saLogout = "Выйти";
 		}

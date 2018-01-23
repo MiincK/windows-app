@@ -29,7 +29,7 @@ namespace ListenMoeClient
 		{
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
-			lblTitle.Text = "Connecting...";
+			lblTitle.Text = Localisation.Current.rConnecting;
 			RecalculateMarqueeBounds();
 		}
 
