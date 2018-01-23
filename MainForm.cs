@@ -609,7 +609,7 @@ namespace ListenMoeClient
 
 		void ProcessSongInfo(SongInfoResponseData songInfo)
 		{
-			string eventInfo = songInfo.requester != null ? "Requested by " + songInfo.requester.displayName : songInfo._event ?? "";
+			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester.displayName) : songInfo._event ?? "";
 			string source = songInfo.song.source.Length > 0 ? songInfo.song.source[0].name : "";
 			centerPanel.SetLabelText(songInfo.song.title,
 				string.Join(",", songInfo.song.artists.Select(a => a.name)),
