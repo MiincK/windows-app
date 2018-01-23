@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ListenMoeClient
 {
-
-
 	public partial class FormSettings : Form
 	{
 		MainForm mainForm;
@@ -60,6 +59,7 @@ namespace ListenMoeClient
 				lblLoginStatus.Location = new Point((this.Width / 2) - (lblLoginStatus.Width / 2), lblLoginStatus.Location.Y);
 				txtUsername.Clear();
 				txtPassword.Clear();
+				panelTwoFactorAuth.Visible = false;
 				panelNotLoggedIn.Visible = false;
 				panelLoggedIn.Visible = true;
 				panelLoggedIn.BringToFront();
@@ -141,8 +141,16 @@ namespace ListenMoeClient
 		private async void btnLogin_Click(object sender, EventArgs e)
 		{
 			btnLogin.Enabled = false;
-			await User.Login(txtUsername.Text, txtPassword.Text);
+			var response = await User.Login(txtUsername.Text, txtPassword.Text);
 			btnLogin.Enabled = true;
+			if (response.mfa)
+			{
+				panelNotLoggedIn.Visible = false;
+				panelLoggedIn.Visible = false;
+				panelTwoFactorAuth.Visible = true;
+				panelTwoFactorAuth.BringToFront();
+				txtTwoFactorAuthCode.Focus();
+			}
 		}
 
 		private void btnLogout_Click(object sender, EventArgs e)
@@ -203,6 +211,28 @@ namespace ListenMoeClient
 				btnLogin.PerformClick();
 			}
 		}
+
+		private async void btnTwoFactorAuthSubmit_Click(object sender, EventArgs e)
+		{
+			btnTwoFactorAuthSubmit.Enabled = false;
+			bool success = await User.LoginMfa(txtTwoFactorAuthCode.Text);
+			btnTwoFactorAuthSubmit.Enabled = true;
+			if (!success)
+			{
+				lblIncorrectTwoFactorAuth.Visible = true;
+				await Task.Delay(2000);
+				lblIncorrectTwoFactorAuth.Visible = false;
+			}
+		}
+
+		private void txtTwoFactorAuthCode_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char) Keys.Enter)
+			{
+				e.Handled = true;
+				btnTwoFactorAuthSubmit.PerformClick();
+ 			}
+ 		}
 	}
 
 	public struct Lang

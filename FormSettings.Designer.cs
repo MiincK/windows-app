@@ -62,6 +62,9 @@
 			this.panelAccentColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.lblBaseColor = new System.Windows.Forms.Label();
 			this.panelBaseColor = new ListenMoeClient.Controls.BorderedPanel();
+			this.panelTwoFactorAuth = new System.Windows.Forms.Panel();
+			this.lblIncorrectTwoFactorAuth = new System.Windows.Forms.Label();
+			this.btnTwoFactorAuthSubmit = new System.Windows.Forms.Button()
 			this.gbLayout = new System.Windows.Forms.GroupBox();
 			this.lblResolutionScaleDesc = new System.Windows.Forms.Label();
 			this.tbResolutionScale = new System.Windows.Forms.TrackBar();
@@ -73,6 +76,7 @@
 			this.panelNotLoggedIn = new System.Windows.Forms.Panel();
 			this.txtUsername = new ListenMoeClient.GhostTextbox();
 			this.txtPassword = new ListenMoeClient.GhostTextbox();
+			this.txtTwoFactorAuthCode = new ListenMoeClient.GhostTextbox();
 			this.panelLoggedIn = new System.Windows.Forms.Panel();
 			this.lblLoginStatus = new System.Windows.Forms.Label();
 			this.btnLogout = new System.Windows.Forms.Button();
@@ -89,6 +93,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.tbResolutionScale)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.tbOpacity)).BeginInit();
 			this.tpAccount.SuspendLayout();
+			this.panelTwoFactorAuth.SuspendLayout();
 			this.panelNotLoggedIn.SuspendLayout();
 			this.panelLoggedIn.SuspendLayout();
 			this.SuspendLayout();
@@ -544,6 +549,7 @@
 			//
 			// tpAccount
 			//
+			this.tpAccount.Controls.Add(this.panelTwoFactorAuth);
 			this.tpAccount.Controls.Add(this.panelNotLoggedIn);
 			this.tpAccount.Controls.Add(this.panelLoggedIn);
 			this.tpAccount.Location = new System.Drawing.Point(4, 22);
@@ -553,6 +559,38 @@
 			this.tpAccount.TabIndex = 0;
 			this.tpAccount.Text = Localisation.Current.sAccount;
 			this.tpAccount.UseVisualStyleBackColor = true;
+			//
+			// panelTwoFactorAuth
+			//
+			this.panelTwoFactorAuth.Controls.Add(this.lblIncorrectTwoFactorAuth);
+			this.panelTwoFactorAuth.Controls.Add(this.txtTwoFactorAuthCode);
+			this.panelTwoFactorAuth.Controls.Add(this.btnTwoFactorAuthSubmit);
+			this.panelTwoFactorAuth.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panelTwoFactorAuth.Location = new System.Drawing.Point(3, 3);
+			this.panelTwoFactorAuth.Name = "panelTwoFactorAuth";
+			this.panelTwoFactorAuth.Size = new System.Drawing.Size(349, 215);
+			this.panelTwoFactorAuth.TabIndex = 6;
+			this.panelTwoFactorAuth.Visible = false;
+			//
+	        // lblIncorrectTwoFactorAuth
+			//
+			this.lblIncorrectTwoFactorAuth.AutoSize = true;
+			this.lblIncorrectTwoFactorAuth.Location = new System.Drawing.Point(67, 93);
+			this.lblIncorrectTwoFactorAuth.Name = "lblIncorrectTwoFactorAuth";
+			this.lblIncorrectTwoFactorAuth.Size = new System.Drawing.Size(243, 13);
+			this.lblIncorrectTwoFactorAuth.TabIndex = 3;
+			this.lblIncorrectTwoFactorAuth.Text = "Incorrect two factor authentication code provided.";
+			this.lblIncorrectTwoFactorAuth.Visible = false;
+			//
+			// btnTwoFactorAuthSubmit
+			//
+			this.btnTwoFactorAuthSubmit.Location = new System.Drawing.Point(147, 58);
+			this.btnTwoFactorAuthSubmit.Name = "btnTwoFactorAuthSubmit";
+			this.btnTwoFactorAuthSubmit.Size = new System.Drawing.Size(75, 23);
+			this.btnTwoFactorAuthSubmit.TabIndex = 0;
+			this.btnTwoFactorAuthSubmit.Text = "Submit";
+			this.btnTwoFactorAuthSubmit.UseVisualStyleBackColor = true;
+			this.btnTwoFactorAuthSubmit.Click += new System.EventHandler(this.btnTwoFactorAuthSubmit_Click);
 			//
 			// panelNotLoggedIn
 			//
@@ -699,5 +737,9 @@
 		private System.Windows.Forms.Label lblVisualiserColor;
 		private System.Windows.Forms.Label lblVisualiserOpacity;
 		private System.Windows.Forms.GroupBox gbUpdate;
+		private System.Windows.Forms.Panel panelTwoFactorAuth;
+		private System.Windows.Forms.Label lblIncorrectTwoFactorAuth;
+		private GhostTextbox txtTwoFactorAuthCode;
+		private System.Windows.Forms.Button btnTwoFactorAuthSubmit;
 	}
 }
