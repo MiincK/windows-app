@@ -52,16 +52,20 @@ namespace ListenMoeClient
 			{
 				try
 				{
-					HttpWebRequest req = WebRequest.CreateHttp(url);
-					req.UserAgent = Globals.USER_AGENT;
-
-					using (var stream = req.GetResponse().GetResponseStream())
+					WebClient wc = new WebClient();
+					wc.Headers[HttpRequestHeader.UserAgent] = Globals.USER_AGENT;
+					
+					using (var stream = wc.OpenRead(url))
 					{
 						var readFullyStream = new ReadFullyStream(stream);
+
+						var pc = 0;
 
 						while (playing)
 						{
 							byte[][] packets = ogg.GetAudioPackets(readFullyStream);
+
+							if (++pc <= 5) continue;
 
 							for (int i = 0; i < packets.Length; i++)
 							{

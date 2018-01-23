@@ -44,8 +44,7 @@ namespace ListenMoeClient
 			WaveFormat format = new WaveFormat(Globals.SAMPLE_RATE, 2);
 			provider = new BufferedWaveProvider(format)
 			{
-				BufferDuration = TimeSpan.FromSeconds(5),
-				DiscardOnBufferOverflow = true
+				BufferDuration = TimeSpan.FromSeconds(10)
 			};
 
 			volumeChannel = new SampleChannel(provider) { Volume = Settings.Get<float>(Setting.Volume) };
@@ -98,7 +97,15 @@ namespace ListenMoeClient
 		{
 			byte[] bytes = new byte[samples.Length * 2];
 			Buffer.BlockCopy(samples, 0, bytes, 0, bytes.Length);
-			provider.AddSamples(bytes, 0, bytes.Length);
+			try
+			{
+				provider.AddSamples(bytes, 0, bytes.Length);
+			}
+			catch
+			{
+				provider.ClearBuffer();
+				provider.AddSamples(bytes, 0, bytes.Length);
+			}
 
 			if (!firstPacket)
 				new Thread(delegate ()
