@@ -64,7 +64,7 @@
 			this.panelBaseColor = new ListenMoeClient.Controls.BorderedPanel();
 			this.panelTwoFactorAuth = new System.Windows.Forms.Panel();
 			this.lblIncorrectTwoFactorAuth = new System.Windows.Forms.Label();
-			this.btnTwoFactorAuthSubmit = new System.Windows.Forms.Button()
+			this.btnTwoFactorAuthSubmit = new System.Windows.Forms.Button();
 			this.gbLayout = new System.Windows.Forms.GroupBox();
 			this.lblResolutionScaleDesc = new System.Windows.Forms.Label();
 			this.tbResolutionScale = new System.Windows.Forms.TrackBar();
