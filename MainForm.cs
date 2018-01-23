@@ -1,8 +1,10 @@
 ﻿using Microsoft.WindowsAPICodePack.Taskbar;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -184,7 +186,7 @@ namespace ListenMoeClient
 
 			Connect();
 
-			player = new WebStreamPlayer("https://listen.moe/stream");
+			player = new WebStreamPlayer("https://listen.moe/opus");
 			player.SetVisualiser(centerPanel.Visualiser);
 			player.Play();
 
@@ -228,7 +230,7 @@ namespace ListenMoeClient
 				picFavourite.Location = new Point(0, (panelRight.Height / 2) - 16);
 			}
 
-			bool favourite = songInfoStream?.currentInfo.extended?.favorite ?? false;
+			bool favourite = songInfoStream?.currentInfo.song.favorite ?? false;
 			picFavourite.Image = favourite ? favSprite.Frames[favSprite.Frames.Length - 1] : favSprite.Frames[0];
 
 			ReloadScale();
@@ -558,7 +560,7 @@ namespace ListenMoeClient
 
 			if (favSprite == null) return;
 
-			if (songInfoStream?.currentInfo.extended?.favorite ?? false)
+			if (songInfoStream?.currentInfo.song.favorite ?? false)
 				picFavourite.Image = favSprite.Frames[favSprite.Frames.Length - 1];
 			else
 				picFavourite.Image = favSprite.Frames[0];
@@ -605,16 +607,16 @@ namespace ListenMoeClient
 			}
 		}
 
-		void ProcessSongInfo(SongInfo songInfo)
+		void ProcessSongInfo(SongInfoResponseData songInfo)
 		{
-			string middle = "";
-			middle = string.IsNullOrWhiteSpace(songInfo.requested_by) ? "" : string.Format(Localisation.Current.mReqestedBy, songInfo.requested_by);
-			if (!string.IsNullOrWhiteSpace(songInfo.anime_name))
-				middle = songInfo.anime_name + (string.IsNullOrWhiteSpace(middle) ? "" : "; ") + middle;
-			centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), middle);
-
-			if (songInfo.extended != null)
-				SetFavouriteSprite(songInfo.extended.favorite);
+			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester.displayName) : songInfo._event ?? "";
+			string source = songInfo.song.source.Length > 0 ? songInfo.song.source[0].name : "";
+			centerPanel.SetLabelText(songInfo.song.title,
+				string.Join(",", songInfo.song.artists.Select(a => a.name)),
+				/*songInfo.song.source,*/ 
+				eventInfo);
+			if (User.LoggedIn)
+				SetFavouriteSprite(songInfo.song.favorite);
 			else
 				picFavourite.Visible = false;
 		}
@@ -662,8 +664,8 @@ namespace ListenMoeClient
 
 		private void menuItemCopySongInfo_Click(object sender, EventArgs e)
 		{
-			SongInfo info = songInfoStream.currentInfo;
-			Clipboard.SetText(info.song_name + " \n" + info.artist_name + " \n" + info.anime_name);
+			SongInfoResponseData info = songInfoStream.currentInfo;
+			Clipboard.SetText(info.song.title + " \n" + string.Join(", ", info.song.artists.Select(a => a.name)) + " \n" + info.song.source);
 		}
 
 		private void picSettings_Click(object sender, EventArgs e)
@@ -746,35 +748,34 @@ namespace ListenMoeClient
 				}
 
 				isAnimating = false;
-				songInfoStream.currentInfo.extended.favorite = true;
+				songInfoStream.currentInfo.song.favorite = true;
 			}
 			else
 			{
 				lock (animationLock)
 					isAnimating = false;
 				picFavourite.Image = favSprite.Frames[0];
-				songInfoStream.currentInfo.extended.favorite = false;
+				songInfoStream.currentInfo.song.favorite = false;
 			}
 		}
 
 		private async void picFavourite_Click(object sender, EventArgs e)
 		{
-			bool currentStatus = songInfoStream.currentInfo.extended?.favorite ?? false;
+			bool currentStatus = songInfoStream?.currentInfo.song.favorite ?? false;
 			bool newStatus = !currentStatus;
-			if (songInfoStream.currentInfo.extended == null)
-				songInfoStream.currentInfo.extended = new ExtendedSongInfo();
-			songInfoStream.currentInfo.extended.favorite = newStatus;
+			songInfoStream.currentInfo.song.favorite = newStatus;
 
 			SetFavouriteSprite(newStatus);
 
-			string result = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>(Setting.Token), new Dictionary<string, string>()
+			(bool success, string result) = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>(Setting.Token), new Dictionary<string, string>()
 			{
-				["song"] = songInfoStream.currentInfo.song_id.ToString()
-			});
+				["song"] = songInfoStream.currentInfo.song.id.ToString()
+			}, true);
 
-			var response = Json.Parse<FavouritesResponse>(result);
+			var response = JsonConvert.DeserializeObject<FavouritesResponse>(result);
 			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] :
 				spriteColorInverted ? darkFavSprite.Frames[0] : favSprite.Frames[0];
+			songInfoStream.currentInfo.song.favorite = response.favorite;
 		}
 
 		private void menuItemResetLocation_Click(object sender, EventArgs e)

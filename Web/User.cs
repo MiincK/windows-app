@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,18 +31,22 @@ namespace ListenMoeClient
 				{ "password", password }
 			};
 
-			string resp = await WebHelper.Post("https://listen.moe/api/authenticate", postData);
-			var response = Json.Parse<AuthenticateResponse>(resp);
-			Settings.Set(Setting.Username, response.success ? username : "");
-			loggedIn = response.success;
-			if (loggedIn)
+			(bool success, string resp) = await WebHelper.Post("https://listen.moe/api/login", postData, true);
+			var response = JsonConvert.DeserializeObject<AuthenticateResponse>(resp);
+			if (success)
 			{
+				loggedIn = true;
 				//Save successful credentials
 				Settings.Set(Setting.Username, username);
 				Settings.Set(Setting.Token, response.token);
 				Settings.WriteSettings();
 
 				OnLoginComplete();
+			}
+			else
+			{
+				//Login failure; clear old saved credentials
+				Settings.Set(Setting.Username, "");
 			}
 
 			return response;
@@ -54,11 +59,11 @@ namespace ListenMoeClient
 		/// <returns></returns>
 		public static async Task<bool> Login(string token)
 		{
-			string response = await WebHelper.Get("https://listen.moe/api/user", token);
-			var result = Json.Parse<ListenMoeResponse>(response);
-			loggedIn = result.success;
-			if (loggedIn)
+			(bool success, string resp) = await WebHelper.Get("https://listen.moe/api/users/@me", "Bearer " + token, true);
+			var response = JsonConvert.DeserializeObject<ListenMoeResponse>(resp);
+			if (success)
 			{
+				loggedIn = true;
 				OnLoginComplete();
 			}
 			else
