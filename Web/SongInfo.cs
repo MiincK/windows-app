@@ -38,34 +38,51 @@ namespace ListenMoeClient
 	public class SongInfoResponseData
 	{
 		public Song song { get; set; }
-		public string requester { get; set; }
+		public Requester requester { get; set; }
 		public string _event { get; set; }
 		public DateTime startTime { get; set; }
 		public Song[] lastPlayed { get; set; }
 		public int listeners { get; set; }
 	}
-	public class Song
+
+	public class Requester
+ 	{
+ 		public string uuid { get; set; }
+ 		public string username { get; set; }
+ 		public string displayName { get; set; }
+ 	}
+
+public class Song
 	{
 		public int id { get; set; }
 		public string title { get; set; }
-		public string[] source { get; set; }
+		public Source[] source { get; set; }
 		public Artist[] artists { get; set; }
 		public Album[] albums { get; set; }
 		public int duration { get; set; }
 		public bool favorite { get; set; }
 	}
-	public class Artist
+
+	public class Source
+ 	{
+ 		public int id { get; set; }
+ 		public string name { get; set; }
+ 		public string nameRomaji { get; set; }
+ 		public object artistImage { get; set; }
+ 	}
+
+public class Artist
 	{
 		public int id { get; set; }
 		public string name { get; set; }
-		public object nameRomaji { get; set; }
+		public string nameRomaji { get; set; }
 		public object artistImage { get; set; }
 	}
 	public class Album
 	{
 		public int id { get; set; }
 		public string name { get; set; }
-		public object nameRomaji { get; set; }
+		public string nameRomaji { get; set; }
 		public string coverImage { get; set; }
 	}
 
@@ -77,7 +94,7 @@ namespace ListenMoeClient
 		public event StatsReceived OnSongInfoReceived = (info) => { };
 		public SongInfoResponseData currentInfo;
 
-		private const string SOCKET_ADDR = "wss://dev.listen.moe/gateway";
+		private const string SOCKET_ADDR = "wss://listen.moe/gateway";
 
 		private Thread heartbeatThread;
 		private CancellationTokenSource cts;
@@ -177,8 +194,9 @@ namespace ListenMoeClient
 
 		private string Clean(string input)
 		{
-			return input is null ? null : input.Trim().Replace('\n', ' ');
+			return input?.Trim().Replace('\n', ' ');
 		}
+
 		private void ParseSongInfo(string data)
 		{
 			string noWhitespaceData = new string(data.Where(c => !Char.IsWhiteSpace(c)).ToArray());
@@ -196,8 +214,11 @@ namespace ListenMoeClient
 					return;
 
 				currentInfo = resp.d;
-				if (currentInfo.song.source.Length > 0)
-					currentInfo.song.source[0] = Clean(currentInfo.song.source.First());
+				currentInfo.song.source = currentInfo.song.source ?? new Source[0];
+				foreach (var source in currentInfo.song.source)
+				{
+					source.name = Clean(source.name);
+				}
 
 				foreach (var artist in currentInfo.song.artists)
 				{
@@ -206,7 +227,10 @@ namespace ListenMoeClient
 				currentInfo.song.title = Clean(currentInfo.song.title);
 
 				if (currentInfo.requester != null)
-					currentInfo.requester = Clean(currentInfo.requester);
+				{
+					currentInfo.requester.displayName = Clean(currentInfo.requester.displayName);
+					currentInfo.requester.username = Clean(currentInfo.requester.username);
+				}
 
 				if (currentInfo._event != null)
 					currentInfo._event = Clean(currentInfo._event);

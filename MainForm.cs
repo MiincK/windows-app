@@ -186,7 +186,7 @@ namespace ListenMoeClient
 
 			Connect();
 
-			player = new WebStreamPlayer("https://listen.moe/stream");
+			player = new WebStreamPlayer("https://listen.moe/opus");
 			player.SetVisualiser(centerPanel.Visualiser);
 			player.Play();
 
@@ -609,14 +609,8 @@ namespace ListenMoeClient
 
 		void ProcessSongInfo(SongInfoResponseData songInfo)
 		{
-			//string middle = "";
-			//middle = string.IsNullOrWhiteSpace(songInfo.requested_by) ? "" : string.Format(Localisation.Current.mReqestedBy, songInfo.requested_by);
-			//if (!string.IsNullOrWhiteSpace(songInfo.anime_name))
-			//	middle = songInfo.anime_name + (string.IsNullOrWhiteSpace(middle) ? "" : "; ") + middle;
-			//centerPanel.SetLabelText(songInfo.song_name, songInfo.artist_name.Trim(), middle);
-			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester) : songInfo._event ?? "";
-			var source = songInfo.song.source.Length > 0 ? songInfo.song.source[0] : "";
-			eventInfo = string.IsNullOrWhiteSpace(eventInfo) ? source : source + "; " + eventInfo;
+			string eventInfo = songInfo.requester != null ? "Requested by " + songInfo.requester.displayName : songInfo._event ?? "";
+			string source = songInfo.song.source.Length > 0 ? songInfo.song.source[0].name : "";
 			centerPanel.SetLabelText(songInfo.song.title,
 				string.Join(",", songInfo.song.artists.Select(a => a.name)),
 				/*songInfo.song.source,*/ 
