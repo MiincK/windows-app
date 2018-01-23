@@ -86,7 +86,7 @@ namespace ListenMoeClient
 				DateTime now = DateTime.Now;
 				int currentPos = (int)(Globals.SAMPLE_RATE * ((now - anchor).TotalMilliseconds / 1000)) * 2;
 				anchor = now;
-				for (int i = 0; i < currentPos && sampleBuffer.Count > 0 || sampleBuffer.Count > Globals.SAMPLE_RATE * 7.5; i++)
+				for (int i = 0; i < currentPos && sampleBuffer.Count > 0; i++)
 					sampleBuffer.PopLeft();
 			}
 		}
