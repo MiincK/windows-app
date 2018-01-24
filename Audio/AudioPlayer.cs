@@ -107,10 +107,9 @@ namespace ListenMoeClient
 				provider.AddSamples(bytes, 0, bytes.Length);
 			}
 
-			if (!firstPacket)
+			if (!firstPacket && (firstPacket = true))
 				new Thread(delegate ()
 				{
-					firstPacket = true;
 					Thread.Sleep(1000);
 					while (playing)
 					{

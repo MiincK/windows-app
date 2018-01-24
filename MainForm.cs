@@ -613,7 +613,7 @@ namespace ListenMoeClient
 			string source = songInfo.song.sources.Length > 0 ? String.Join(", ", songInfo.song.sources.Select(x => x.name)) : "";
 			if (!string.IsNullOrWhiteSpace(source)) eventInfo = source + "; " + eventInfo;
 			centerPanel.SetLabelText(songInfo.song.title,
-				string.Join(",", songInfo.song.artists.Select(a => a.name)),
+				string.Join(", ", songInfo.song.artists.Select(a => a.name)),
 				eventInfo);
 			if (User.LoggedIn)
 				SetFavouriteSprite(songInfo.song.favorite);
