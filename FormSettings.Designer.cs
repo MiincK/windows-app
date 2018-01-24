@@ -584,13 +584,22 @@
 			//
 			// btnTwoFactorAuthSubmit
 			//
-			this.btnTwoFactorAuthSubmit.Location = new System.Drawing.Point(147, 58);
+			this.btnTwoFactorAuthSubmit.Location = new System.Drawing.Point(142, 58);
 			this.btnTwoFactorAuthSubmit.Name = "btnTwoFactorAuthSubmit";
-			this.btnTwoFactorAuthSubmit.Size = new System.Drawing.Size(75, 23);
+			this.btnTwoFactorAuthSubmit.Size = new System.Drawing.Size(85, 23);
 			this.btnTwoFactorAuthSubmit.TabIndex = 0;
 			this.btnTwoFactorAuthSubmit.Text = Localisation.Current.sa2faSubmit;
 			this.btnTwoFactorAuthSubmit.UseVisualStyleBackColor = true;
 			this.btnTwoFactorAuthSubmit.Click += new System.EventHandler(this.btnTwoFactorAuthSubmit_Click);
+			//
+			// txtTwoFactorAuthCode
+			//
+			this.txtTwoFactorAuthCode.GhostText = Localisation.Current.sa2faCode;
+			this.txtTwoFactorAuthCode.Location = new System.Drawing.Point(94, 32);
+			this.txtTwoFactorAuthCode.Name = "txtTwoFactorAuthCode";
+			this.txtTwoFactorAuthCode.Size = new System.Drawing.Size(181, 20);
+			this.txtTwoFactorAuthCode.TabIndex = 2;
+			this.txtTwoFactorAuthCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTwoFactorAuthCode_KeyPress);
 			//
 			// panelNotLoggedIn
 			//

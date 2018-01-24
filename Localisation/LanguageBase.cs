@@ -56,6 +56,7 @@
 		public string saPassword { get; protected set; }
 		public string saWrong2faCode { get; protected set; }
 		public string sa2faSubmit { get; protected set; }
+		public string sa2faCode { get; protected set; }
 		public string saLogin { get; protected set; }
 		public string saLoggedInAs { get; protected set; }
 		public string saLogout { get; protected set; }
@@ -115,6 +116,7 @@
 			saPassword = "Password";
 			saLogin = "Login";
 			saWrong2faCode = "Incorrect two factor authentication code provided.";
+			sa2faCode = "Two factor authentication code";
 			sa2faSubmit = "Submit";
 			saLoggedInAs = "Logged in as {0}";
 			saLogout = "Logout";

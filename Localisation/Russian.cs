@@ -57,6 +57,7 @@
 			saPassword = "Пароль";
 			saLogin = "Войти";
 			saWrong2faCode = "Неверный код двухфакторной аутентификации.";
+			sa2faCode = "Код двухфакторной аутентификации";
 			sa2faSubmit = "Подтвердить";
 			saLoggedInAs = "Вы вошли как {0}";
 			saLogout = "Выйти";
