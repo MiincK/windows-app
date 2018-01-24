@@ -611,7 +611,7 @@ namespace ListenMoeClient
 		{
 			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester.displayName) : songInfo._event ?? "";
 			string source = songInfo.song.sources.Length > 0 ? String.Join(", ", songInfo.song.sources.Select(x => x.name ?? x.nameRomaji)) : "";
-			if (!string.IsNullOrWhiteSpace(source)) eventInfo = source + "; " + eventInfo;
+			if (!string.IsNullOrWhiteSpace(source)) eventInfo = source + (String.IsNullOrWhiteSpace(eventInfo)? "" : "; " + eventInfo);
 			centerPanel.SetLabelText(songInfo.song.title,
 				string.Join(", ", songInfo.song.artists.Select(a => a.name)),
 				eventInfo);
