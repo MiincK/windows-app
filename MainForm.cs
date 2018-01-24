@@ -610,7 +610,7 @@ namespace ListenMoeClient
 		void ProcessSongInfo(SongInfoResponseData songInfo)
 		{
 			string eventInfo = songInfo.requester != null ? string.Format(Localisation.Current.mReqestedBy, songInfo.requester.displayName) : songInfo._event ?? "";
-			string source = songInfo.song.sources.Length > 0 ? String.Join(", ", songInfo.song.sources.Select(x => x.name)) : "";
+			string source = songInfo.song.sources.Length > 0 ? String.Join(", ", songInfo.song.sources.Select(x => x.name ?? x.nameRomaji)) : "";
 			if (!string.IsNullOrWhiteSpace(source)) eventInfo = source + "; " + eventInfo;
 			centerPanel.SetLabelText(songInfo.song.title,
 				string.Join(", ", songInfo.song.artists.Select(a => a.name)),
@@ -667,7 +667,7 @@ namespace ListenMoeClient
 			SongInfoResponseData info = songInfoStream.currentInfo;
 			Clipboard.SetText(info.song.title + " \n" +
 				String.Join(", ", info.song.artists.Select(a => a.name)) + " \n" +
-				String.Join(", ", info.song.sources.Select(x => x.name)));
+				String.Join(", ", info.song.sources.Select(x => x.name ?? x.nameRomaji)));
 		}
 
 		private void picSettings_Click(object sender, EventArgs e)
