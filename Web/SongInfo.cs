@@ -56,7 +56,7 @@ public class Song
 	{
 		public int id { get; set; }
 		public string title { get; set; }
-		public Source[] source { get; set; }
+		public Source[] sources { get; set; }
 		public Artist[] artists { get; set; }
 		public Album[] albums { get; set; }
 		public int duration { get; set; }
@@ -214,8 +214,8 @@ public class Artist
 					return;
 
 				currentInfo = resp.d;
-				currentInfo.song.source = currentInfo.song.source ?? new Source[0];
-				foreach (var source in currentInfo.song.source)
+				currentInfo.song.sources = currentInfo.song.sources ?? new Source[0];
+				foreach (var source in currentInfo.song.sources)
 				{
 					source.name = Clean(source.name);
 				}
