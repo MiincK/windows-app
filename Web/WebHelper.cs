@@ -27,6 +27,7 @@ namespace ListenMoeClient
 	{
 		private static byte[] createPostData(Dictionary<string, string> postData)
 		{
+			if (postData == null) return new byte[0];
 			StringBuilder result = new StringBuilder("{");
 			foreach (var keyValuePair in postData)
 			{
@@ -36,6 +37,12 @@ namespace ListenMoeClient
 			result[result.Length - 1] = '}';
 
 			return Encoding.UTF8.GetBytes(result.ToString());
+		}
+
+		#region POST
+		public static async Task<(bool, string)> Post(string url, string token, bool isListenMoe)
+		{
+			return await Post(url, token, null, "application/json", isListenMoe);
 		}
 
 		public static async Task<(bool, string)> Post(string url, string token, Dictionary<string, string> postData, bool isListenMoe)
@@ -83,6 +90,9 @@ namespace ListenMoeClient
 			string result = await new StreamReader(respStream).ReadToEndAsync();
 			return (success, result);
 		}
+		#endregion
+
+		#region GET
 		public static async Task<(bool, string)> Get(string endpoint, bool isListenMoe)
 		{
 			return await Get(endpoint, "", isListenMoe);
@@ -115,5 +125,41 @@ namespace ListenMoeClient
 			string result = await new StreamReader(respStream).ReadToEndAsync();
 			return (success, result);
 		}
+		#endregion
+
+		#region DELETE
+		public static async Task<(bool, string)> Delete(string endpoint, bool isListenMoe)
+		{
+			return await Delete(endpoint, "", isListenMoe);
+		}
+
+		public static async Task<(bool, string)> Delete(string url, string token, bool isListenMoe)
+		{
+			HttpWebRequest hwr = WebRequest.CreateHttp(url);
+			hwr.Method = "DELETE";
+			hwr.Timeout = 2000;
+			hwr.UserAgent = Globals.USER_AGENT;
+			if (token.Trim() != "")
+				hwr.Headers["authorization"] = token;
+
+			if (isListenMoe)
+				hwr.Accept = "application/vnd.listen.v4+json";
+
+			Stream respStream;
+			bool success = true;
+			try
+			{
+				respStream = (await hwr.GetResponseAsync()).GetResponseStream();
+			}
+			catch (WebException e)
+			{
+				success = false;
+				respStream = e.Response.GetResponseStream();
+			}
+
+			string result = await new StreamReader(respStream).ReadToEndAsync();
+			return (success, result);
+		}
+		#endregion
 	}
 }

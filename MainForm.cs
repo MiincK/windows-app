@@ -767,22 +767,25 @@ namespace ListenMoeClient
 		{
 			bool currentStatus = songInfoStream?.currentInfo?.song.favorite ?? false;
 			bool newStatus = !currentStatus;
-			if (songInfoStream.currentInfo != null && songInfoStream.currentInfo.song != null)
-				songInfoStream.currentInfo.song.favorite = newStatus;
 
-			SetFavouriteSprite(newStatus);
-
-			(bool success, string result) = await WebHelper.Post("https://listen.moe/api/songs/favorite", Settings.Get<string>(Setting.Token), new Dictionary<string, string>()
+			(bool success, string result) = newStatus ?
+				await WebHelper.Post( //If we want to ADD favourite, we make POST
+					"https://listen.moe/api/favorites/" + songInfoStream?.currentInfo?.song.id.ToString() ?? "",
+					"Bearer " + Settings.Get<string>(Setting.Token),
+					true) :
+				await WebHelper.Delete( //If we want to REMOVE favourite, we make DELETE
+					"https://listen.moe/api/favorites/" + songInfoStream?.currentInfo?.song.id.ToString() ?? "",
+					"Bearer " + Settings.Get<string>(Setting.Token),
+					true);
+			
+			if (success)
 			{
-				["song"] = songInfoStream?.currentInfo?.song.id.ToString() ?? ""
-			}, true);
+				SetFavouriteSprite(newStatus);
 
-			var response = JsonConvert.DeserializeObject<FavouritesResponse>(result);
-			picFavourite.Image = response.favorite ? favSprite.Frames[favSprite.Frames.Length - 1] :
-				spriteColorInverted ? darkFavSprite.Frames[0] : favSprite.Frames[0];
-
-			if (songInfoStream.currentInfo != null && songInfoStream.currentInfo.song != null)
-				songInfoStream.currentInfo.song.favorite = response.favorite;
+				if (songInfoStream.currentInfo != null && songInfoStream.currentInfo.song != null)
+					songInfoStream.currentInfo.song.favorite = newStatus;
+			}
+			//else there is an error, so we won't change sprite and current info
 		}
 
 		private void menuItemResetLocation_Click(object sender, EventArgs e)
