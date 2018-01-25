@@ -39,6 +39,16 @@ namespace ListenMoeClient
 		bool firstPacket;
 		bool playing;
 
+		internal bool Playing {
+			get { return playing; }
+			set
+			{
+				if (value == playing) return;
+				if (value) Play();
+				else Stop();
+			}
+		}
+
 		public AudioPlayer()
 		{
 			WaveFormat format = new WaveFormat(Globals.SAMPLE_RATE, 2);
@@ -67,14 +77,14 @@ namespace ListenMoeClient
 			Settings.WriteSettings();
 		}
 
-		public void Play()
+		private void Play()
 		{
 			provider.ClearBuffer();
 			directOut.Play();
 			playing = true;
 		}
 
-		public void Stop()
+		private void Stop()
 		{
 			directOut.Stop();
 			provider.ClearBuffer();

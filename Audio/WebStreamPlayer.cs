@@ -22,20 +22,21 @@ namespace ListenMoeClient
 
 		public WebStreamPlayer(string url)
 		{
+			Globals.OnInternetDisconnected += InternetDisconnected;
 			this.url = url;
 		}
 
 		private async void InternetDisconnected()
 		{
 			if (!playing) return;
-			await Stop();
+			await Stop(true);
 			Thread.Sleep(100);
 			Play();
 		}
 
 		public async Task Dispose()
 		{
-			await Stop();
+			await Stop(false);
 		}
 
 		public void SetVisualiser(AudioVisualiser visualiser)
@@ -45,7 +46,7 @@ namespace ListenMoeClient
 
 		public void Play()
 		{
-			BasePlayer.Play();
+			BasePlayer.Playing = true;
 			playing = true;
 
 			provideThread = new Thread(() =>
@@ -101,13 +102,13 @@ namespace ListenMoeClient
 			return BasePlayer.AddVolume(vol);
 		}
 
-		public async Task Stop()
+		public async Task Stop(bool isSoft)
 		{
 			if (playing)
 			{
 				playing = false;
 
-				BasePlayer.Stop();
+				if (!isSoft) BasePlayer.Playing = false;
 
 				if (provideThread != null)
 				{

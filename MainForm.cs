@@ -570,7 +570,7 @@ namespace ListenMoeClient
 		{
 			if (player.IsPlaying())
 			{
-				Task stopTask = player.Stop();
+				Task stopTask = player.Stop(false);
 				ReloadSprites();
 				menuItemPlayPause.Text = Localisation.Current.tPlay;
 				if (Settings.Get<bool>(Setting.ThumbnailButton) && !Settings.Get<bool>(Setting.HideFromAltTab))
