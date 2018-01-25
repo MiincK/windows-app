@@ -119,10 +119,10 @@ namespace ListenMoeClient
 			catch (WebException e)
 			{
 				success = false;
-				respStream = e.Response.GetResponseStream();
+				respStream = e.Response?.GetResponseStream();
 			}
 
-			string result = await new StreamReader(respStream).ReadToEndAsync();
+			string result = respStream is null ? "" : await new StreamReader(respStream).ReadToEndAsync();
 			return (success, result);
 		}
 		#endregion

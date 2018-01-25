@@ -89,6 +89,10 @@ namespace ListenMoeClient
 						}
 					}
 				}
+				catch (WebException)
+				{
+					Thread.Sleep(250); Play();
+				}
 				catch (Exception)
 				{
 
