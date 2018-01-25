@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace ListenMoeClient
 		string url;
 
 		AudioVisualiser visualiser;
+		private Stream BaseStream;
 
 		public WebStreamPlayer(string url)
 		{
@@ -55,36 +57,40 @@ namespace ListenMoeClient
 				{
 					WebClient wc = new WebClient();
 					wc.Headers[HttpRequestHeader.UserAgent] = Globals.USER_AGENT;
-					
-					using (var stream = wc.OpenRead(url))
+
+					BaseStream = wc.OpenRead(url);
+
+					var readFullyStream = new ReadFullyStream(BaseStream);
+
+					var pc = 0;
+
+					while (playing)
 					{
-						var readFullyStream = new ReadFullyStream(stream);
-
-						var pc = 0;
-
-						while (playing)
+						byte[][] packets;
+						try
 						{
-							byte[][] packets = ogg.GetAudioPackets(readFullyStream);
+							packets = ogg.GetAudioPackets(readFullyStream);
+						}
+						catch (System.IO.IOException) { break; }
 
-							if (++pc <= 5) continue;
+						if (++pc <= 5) continue;
 
-							for (int i = 0; i < packets.Length; i++)
+						for (int i = 0; i < packets.Length; i++)
+						{
+							var streamBytes = packets[i];
+							try
 							{
-								var streamBytes = packets[i];
-								try
-								{
-									int frameSize = OpusPacketInfo.GetNumSamplesPerFrame(streamBytes, 0, Globals.SAMPLE_RATE); //Get frame size from opus packet
-									short[] rawBuffer = new short[frameSize * 2]; //2 channels
-									var buffer = decoder.Decode(streamBytes, 0, streamBytes.Length, rawBuffer, 0, frameSize, false);
-									BasePlayer.QueueBuffer(rawBuffer);
+								int frameSize = OpusPacketInfo.GetNumSamplesPerFrame(streamBytes, 0, Globals.SAMPLE_RATE); //Get frame size from opus packet
+								short[] rawBuffer = new short[frameSize * 2]; //2 channels
+								var buffer = decoder.Decode(streamBytes, 0, streamBytes.Length, rawBuffer, 0, frameSize, false);
+								BasePlayer.QueueBuffer(rawBuffer);
 
-									if (visualiser != null)
-										visualiser.AddSamples(rawBuffer);
-								}
-								catch (Concentus.OpusException)
-								{
-									//Skip this frame
-								}
+								if (visualiser != null)
+									visualiser.AddSamples(rawBuffer);
+							}
+							catch (Concentus.OpusException)
+							{
+								//Skip this frame
 							}
 						}
 					}
@@ -116,6 +122,7 @@ namespace ListenMoeClient
 
 				if (provideThread != null)
 				{
+					BaseStream.Dispose();
 					provideThread.Abort();
 					await Task.Run(() => provideThread.Join());
 					provideThread = null;

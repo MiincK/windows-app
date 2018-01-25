@@ -111,12 +111,13 @@ public class Artist
 			socket = new WebSocket(SOCKET_ADDR);
 
 			socket.OnMessage += (sender, e) => ParseSongInfo(e.Data);
-			socket.OnError += (sender, e) => { throw e.Exception; };
+			socket.OnError += (sender, e) => { if(e.Exception != null) throw e.Exception; };
 			socket.OnClose += (sender, e) =>
 			{
 				Thread.Sleep(250);
 				Connect();
 			};
+			socket.OnOpen += (sender, e) => Authenticate();
 
 			socket.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 			Connect();
@@ -131,9 +132,7 @@ public class Artist
 		{
 			try
 			{
-				socket.Connect();
-
-				Authenticate();
+				socket.ConnectAsync();
 			}
 			catch (Exception) { }
 		}

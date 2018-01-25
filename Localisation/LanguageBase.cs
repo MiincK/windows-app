@@ -10,6 +10,7 @@
 
 		public string rCopySongInfo { get; protected set; }
 		public string rConnecting { get; protected set; }
+		public string rReconnecting { get; protected set; }
 
 		public string mReqestedBy { get; protected set; }
 		public string mUpdateAvailable { get; protected set; }
@@ -71,6 +72,7 @@
 
 			rCopySongInfo = "Copy song info";
 			rConnecting = "Connecting...";
+			rReconnecting = "Reconnecting...";
 
 			mReqestedBy = "Requseted by {0}";
 			mUpdateAvailable = "An update is available for the Listen.moe player. Do you want to update and restart the application now?";

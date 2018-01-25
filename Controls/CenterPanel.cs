@@ -30,6 +30,7 @@ namespace ListenMoeClient
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
 			lblTitle.Text = Localisation.Current.rConnecting;
+			Globals.OnInternetDisconnected += () => { lblTitle.Text = Localisation.Current.rReconnecting; lblAlbum.Text = lblTitle.Subtext = ""; };
 			RecalculateMarqueeBounds();
 		}
 
