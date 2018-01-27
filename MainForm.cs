@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -613,7 +614,7 @@ namespace ListenMoeClient
 			string source = songInfo.song.sources.Length > 0 ? String.Join(", ", songInfo.song.sources.Select(x => x.name ?? x.nameRomaji)) : "";
 			if (!string.IsNullOrWhiteSpace(source)) eventInfo = source + (String.IsNullOrWhiteSpace(eventInfo)? "" : "; " + eventInfo);
 			centerPanel.SetLabelText(songInfo.song.title,
-				string.Join(", ", songInfo.song.artists.Select(a => a.name)),
+				string.Join(", ", songInfo.song.artists.Select(a => a.name ?? a.nameRomaji)),
 				eventInfo);
 			if (User.LoggedIn)
 				SetFavouriteSprite(songInfo.song.favorite);
@@ -665,9 +666,11 @@ namespace ListenMoeClient
 		private void menuItemCopySongInfo_Click(object sender, EventArgs e)
 		{
 			SongInfoResponseData info = songInfoStream.currentInfo;
-			Clipboard.SetText(info.song.title + " \n" +
-				String.Join(", ", info.song.artists.Select(a => a.name)) + " \n" +
-				String.Join(", ", info.song.sources.Select(x => x.name ?? x.nameRomaji)));
+			var sb = new StringBuilder();
+			sb.AppendLine(info.song.title);
+			sb.AppendLine(String.Join(", ", info.song.artists.Select(a => a.name ?? a.nameRomaji)));
+			sb.AppendLine(String.Join(", ", info.song.sources.Select(s => s.name ?? s.nameRomaji)));
+			Clipboard.SetText(sb.ToString());
 		}
 
 		private void picSettings_Click(object sender, EventArgs e)

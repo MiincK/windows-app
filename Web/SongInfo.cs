@@ -217,11 +217,13 @@ public class Artist
 				foreach (var source in currentInfo.song.sources)
 				{
 					source.name = Clean(source.name);
+					source.nameRomaji = Clean(source.nameRomaji);
 				}
 
 				foreach (var artist in currentInfo.song.artists)
 				{
 					artist.name = Clean(artist.name);
+					artist.nameRomaji = Clean(artist.nameRomaji);
 				}
 				currentInfo.song.title = Clean(currentInfo.song.title);
 
